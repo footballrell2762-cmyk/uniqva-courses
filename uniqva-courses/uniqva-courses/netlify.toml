@@ -1,0 +1,13 @@
+# Netlify config
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# nice redirect so /watch works too (optional)
+[[redirects]]
+  from = "/watch"
+  to = "/watch.html"
+  status = 200
