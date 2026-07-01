@@ -1,63 +1,47 @@
 /* =========================================================================
-   COURSES DATA  (PUBLIC FILE)
+   PRODUCT DATA  (PUBLIC FILE)
    -------------------------------------------------------------------------
-   Yahan sirf MARKETING info rakho. Course ka asli Google Drive folder link
-   YAHAN MAT DAALO — wo Netlify ke secret environment variables me jaata hai
-   (verify-payment function use karta hai). Tabhi koi bina pay kiye link
-   nahi chura sakta.
+   Yeh reels BUNDLE hai — coaching course nahi.
+   Customer ₹99 deta hai, 2000+ HD football reels ka Google Drive folder
+   milta hai, jise wo apne Insta / YouTube / Facebook page pe daal ke
+   followers aur views badha sake.
 
-   NAYA COURSE ADD karna ho to bas neeche ek naya object add kar do.
-   - "comingSoon: true"  -> abhi sirf teaser dikhega, buy band rahega
-   - "comingSoon: false" -> live, log pay karke access le sakte hain
+   Asli Drive folder link YAHAN NAHI hai — wo Netlify ke secret env var
+   (FOLDER_FOOTBALL) me hai, payment verify hone ke baad hi milta hai.
    ========================================================================= */
 
 window.COURSES = [
   {
-    id: "football",                 // unique id (env var isi se banta hai: FOLDER_FOOTBALL)
+    id: "football",                 // env var isi se: FOLDER_FOOTBALL
     live: true,
     comingSoon: false,
     badge: "BESTSELLER",
-    title: "2000+ Football Drills Bundle",
-    tagline: "Ghar baithe pro-level skills. Roz naye drills, lifetime access.",
+    title: "2000+ Football Reels Bundle",
+    tagline: "Ready-to-post HD reels. Roz daal, page grow kar, views kama.",
     price: 99,
-    mrp: 999,                       // anchor price (kati hui kimat)
+    mrp: 999,
     currency: "INR",
-    heroLine: "Become Undroppable",
-    promise: "2000+ short drill videos — dribbling, first touch, finishing, speed, agility & match IQ. Sab kuch ek hi bundle me.",
+    heroLine: "Blow Up Your Football Page",
+    promise: "2000+ pehle se edited HD football reels — Ronaldo, Messi, Neymar aur baaki top players. Bas download karo aur apne page pe daalo. Koi editing nahi.",
     stats: [
-      { num: "2000+", label: "Drill videos" },
-      { num: "12", label: "Skill categories" },
-      { num: "₹99", label: "One-time, lifetime" }
+      { num: "2000+", label: "Ready reels" },
+      { num: "HD",    label: "Best quality" },
+      { num: "Lifetime", label: "One-time access" }
     ],
     categories: [
-      "Dribbling & Close Control",
-      "First Touch & Ball Mastery",
-      "Finishing & Shooting",
-      "Passing & Vision",
-      "Speed & Agility (SAQ)",
-      "Defending & Tackling",
-      "1v1 Moves & Skills",
-      "Wall / Solo Drills",
-      "Fitness & Conditioning",
-      "Warm-up & Recovery",
-      "Goalkeeper Basics",
-      "Match IQ & Positioning"
+      "Ronaldo edits",
+      "Messi magic",
+      "Neymar skills",
+      "Goals & bangers",
+      "Skills & dribbles",
+      "Celebrations",
+      "Motivation edits",
+      "Freestyle & tricks",
+      "Rivalry / GOAT edits",
+      "Slow-mo cinematic clips",
+      "Transfer / news style",
+      "Trending audio-ready reels"
     ],
-    thumbEmoji: "⚽"
-  },
-
-  /* ----- AAGE KE COURSES (abhi coming soon, ready jab content ho) -----
-  {
-    id: "futsal",
-    live: false,
-    comingSoon: true,
-    badge: "COMING SOON",
-    title: "Futsal Mastery Bundle",
-    tagline: "Tight-space control & quick feet.",
-    price: 99, mrp: 999, currency: "INR",
-    heroLine: "Own The Small Court",
-    promise: "...",
-    stats: [], categories: [], thumbEmoji: "🥅"
-  },
-  */
+    thumbEmoji: "\u26bd"
+  }
 ];
