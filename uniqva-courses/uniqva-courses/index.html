@@ -3,18 +3,20 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>document.documentElement.className += " js-reveal";</script>
 
 <!-- ============ SEO ============ -->
 <title>2000+ Football Reels Bundle | ₹99 — Ready to Post on Insta, YouTube & FB</title>
 <meta name="description" content="2000+ pehle se edited HD football reels — Ronaldo, Messi, Neymar & more. ₹99 mein Google Drive folder milega. Download karo, apne page pe daalo, followers & views badhao. Lifetime access." />
 <meta name="keywords" content="football reels bundle, ready made football reels, ronaldo messi reels, instagram reels pack, youtube shorts football, viral football clips, reels for content creators" />
-<link rel="canonical" href="https://YOURDOMAIN.in/" />
+<link rel="canonical" href="https://zingy-froyo-1e2cfa.netlify.app/" />
 
 <!-- ============ Open Graph (FB/Insta share preview) ============ -->
 <meta property="og:type" content="website" />
+<meta property="og:url" content="https://zingy-froyo-1e2cfa.netlify.app/" />
 <meta property="og:title" content="2000+ Football Reels Bundle — ₹99 | Ready to Post" />
 <meta property="og:description" content="2000+ HD edited football reels. Download & post on your Insta / YouTube / FB page. One-time ₹99, lifetime access." />
-<meta property="og:image" content="https://YOURDOMAIN.in/og-cover.jpg" />
+<meta property="og:image" content="https://zingy-froyo-1e2cfa.netlify.app/og-cover.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
 
 <!-- ============ Fonts ============ -->
@@ -219,9 +221,23 @@
 <footer class="foot">
   <div class="wrap foot-inner">
     <span>&copy; <span id="yr"></span> Uniqva Reels. All rights reserved.</span>
-    <span>Need help? <a href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noopener">WhatsApp support</a></span>
+    <nav class="foot-links" aria-label="Legal">
+      <a href="/terms.html">Terms</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/refund.html">Refund</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+    <span>Need help? <a href="https://wa.me/916390877542" target="_blank" rel="noopener">WhatsApp support</a></span>
   </div>
 </footer>
+
+<!-- ===================== MOBILE STICKY CTA ===================== -->
+<div class="sticky-cta" id="stickyCta" aria-hidden="true">
+  <div class="wrap sticky-inner">
+    <div class="sc-price"><b>&#8377;99</b><s>&#8377;999</s><span>2000+ HD reels</span></div>
+    <button class="btn btn-go" data-buy data-course="football">Get Bundle &rarr;</button>
+  </div>
+</div>
 
 <!-- ===================== CHECKOUT MODAL ===================== -->
 <div class="modal-bg" id="modalBg">
@@ -243,5 +259,53 @@
 
 <script src="courses.js"></script>
 <script src="app.js"></script>
+
+<!-- ============ scroll reveal + mobile sticky CTA (UI polish only) ============ -->
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- scroll reveal ---- */
+  var targets = [];
+  [".proof-inner",".sec-head",".cat",".step",".price-card",".qa",".soon",".final h2",".final p",".final .btn"]
+    .forEach(function (sel) {
+      document.querySelectorAll(sel).forEach(function (el) { targets.push(el); });
+    });
+
+  if (reduce || !("IntersectionObserver" in window)) {
+    targets.forEach(function (el) { el.classList.add("reveal","in"); });
+  } else {
+    targets.forEach(function (el, i) {
+      el.classList.add("reveal");
+      el.style.transitionDelay = ((i % 6) * 55) + "ms";   // gentle stagger within a row
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+    targets.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---- mobile sticky CTA: show after hero, hide near footer ---- */
+  var bar = document.getElementById("stickyCta");
+  if (bar) {
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var y = window.pageYOffset || document.documentElement.scrollTop;
+      var docH = document.documentElement.scrollHeight;
+      var vh = window.innerHeight;
+      var show = y > 620 && (y + vh) < (docH - 260);
+      bar.classList.toggle("show", show);
+    }
+    window.addEventListener("scroll", function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+    update();
+  }
+})();
+</script>
 </body>
 </html>
