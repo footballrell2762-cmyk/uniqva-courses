@@ -1,7 +1,7 @@
 /* =========================================================================
-   APP.JS — rendering + secure checkout flow
+   APP.JS — rendering + secure checkout flow (CASHFREE version)
    Flow: buy click -> details modal -> create-order (server) ->
-         Razorpay checkout -> verify-payment (server) -> watch page
+         Cashfree checkout popup -> verify-payment (server) -> watch page
    ========================================================================= */
 (function () {
   "use strict";
@@ -66,6 +66,11 @@
 
   function getCourse(id) { return courses.find(function (c) { return c.id === id; }) || featured; }
 
+  function resetPayBtn(course) {
+    mPay.disabled = false;
+    mPay.textContent = "Pay ₹" + course.price + " & Unlock →";
+  }
+
   /* ---- the payment flow ---- */
   function startPayment() {
     var course = getCourse(activeCourseId);
@@ -83,60 +88,50 @@
     mPay.disabled = true;
     mPay.textContent = "Please wait…";
 
-    // 1) create order on server
+    // 1) create order on server (Cashfree ko customer details bhi chahiye)
     fetch("/.netlify/functions/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ courseId: course.id })
+      body: JSON.stringify({ courseId: course.id, name: name, email: email, phone: phone })
     })
       .then(function (r) { return r.json(); })
       .then(function (order) {
-        if (!order || !order.id) throw new Error(order && order.error ? order.error : "Order failed");
+        if (!order || !order.paymentSessionId) {
+          throw new Error(order && order.error ? order.error : "Order failed");
+        }
 
-        // 2) open Razorpay checkout
-        var rzp = new Razorpay({
-          key: order.keyId,                 // public key from server
-          order_id: order.id,
-          amount: order.amount,
-          currency: order.currency || "INR",
-          name: "Uniqva Football",
-          description: course.title,
-          image: "",                        // optional logo url
-          prefill: { name: name, email: email, contact: phone },
-          theme: { color: "#19C37D" },
-          handler: function (resp) { verifyAndUnlock(resp, course); },
-          modal: {
-            ondismiss: function () {
-              mPay.disabled = false;
-              mPay.textContent = "Pay ₹" + course.price + " & Unlock →";
-            }
+        // 2) open Cashfree checkout (popup on same page)
+        var cashfree = Cashfree({ mode: order.mode || "production" });
+        cashfree.checkout({
+          paymentSessionId: order.paymentSessionId,
+          redirectTarget: "_modal"
+        }).then(function (result) {
+          // popup band hua — chahe success ho ya cancel, asli status
+          // hamesha SERVER se verify hota hai (fake nahi ho sakta)
+          if (result && result.error && !result.paymentDetails) {
+            // user ne popup band kiya ya payment attempt fail hua —
+            // phir bhi ek baar status check kar lo (kabhi kabhi paisa kat jaata hai)
+            verifyAndUnlock(order.orderId, course, true);
+          } else {
+            verifyAndUnlock(order.orderId, course, false);
           }
         });
-        rzp.on("payment.failed", function () {
-          setErr("Payment fail hua. Dobara try karo.");
-          mPay.disabled = false;
-          mPay.textContent = "Pay ₹" + course.price + " & Unlock →";
-        });
-        rzp.open();
       })
       .catch(function (e) {
         setErr(e.message || "Kuch galat hua. Try again.");
-        mPay.disabled = false;
-        mPay.textContent = "Pay ₹" + course.price + " & Unlock →";
+        resetPayBtn(course);
       });
   }
 
   /* ---- verify on server, then go to members page ---- */
-  function verifyAndUnlock(resp, course) {
+  function verifyAndUnlock(orderId, course, wasCancelled) {
     mPay.textContent = "Verifying payment…";
     fetch("/.netlify/functions/verify-payment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         courseId: course.id,
-        razorpay_order_id: resp.razorpay_order_id,
-        razorpay_payment_id: resp.razorpay_payment_id,
-        razorpay_signature: resp.razorpay_signature
+        order_id: orderId
       })
     })
       .then(function (r) { return r.json(); })
@@ -148,19 +143,22 @@
               courseId: course.id,
               title: course.title,
               folderLink: data.folderLink,
-              paymentId: resp.razorpay_payment_id
+              paymentId: orderId
             }));
           } catch (e) {}
           window.location.href = "watch.html?course=" + encodeURIComponent(course.id);
         } else {
-          throw new Error(data && data.error ? data.error : "Verification failed");
+          if (wasCancelled) {
+            setErr("Payment complete nahi hua. Dobara try karo.");
+          } else {
+            setErr("Payment hua but verify nahi hua. WhatsApp pe order ID bhejo: " + orderId);
+          }
+          resetPayBtn(course);
         }
       })
       .catch(function (e) {
-        setErr("Payment hua but verify nahi hua. WhatsApp pe payment ID bhejo: " +
-               (resp.razorpay_payment_id || ""));
-        mPay.disabled = false;
-        mPay.textContent = "Retry";
+        setErr("Verify nahi ho paya. Agar paisa kat gaya hai to WhatsApp pe order ID bhejo: " + orderId);
+        resetPayBtn(course);
       });
   }
 

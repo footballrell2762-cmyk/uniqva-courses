@@ -1,6 +1,6 @@
 # ⚽ Uniqva Football — Course Selling Website
 
-2000+ football drills bundle bechne wali website. Razorpay payment + automatic
+2000+ football drills bundle bechne wali website. Cashfree payment + automatic
 delivery + multi-course ready. Secure: course ka asli link bina payment ke kabhi
 expose nahi hota.
 
@@ -17,7 +17,7 @@ uniqva-courses/
 ├─ style.css             # design
 ├─ netlify.toml          # netlify config
 └─ netlify/functions/
-   ├─ create-order.js    # Razorpay order banata hai (server)
+   ├─ create-order.js    # Cashfree order banata hai (server)
    └─ verify-payment.js  # payment verify karke link deta hai (server)
 ```
 
@@ -25,10 +25,10 @@ uniqva-courses/
 
 ## ✅ Launch karne ke liye 6 steps
 
-### 1) Razorpay account (sabse pehle — KYC me 1–2 din lagte hain)
-- razorpay.com pe **business account** banao
+### 1) Cashfree account (sabse pehle — KYC me 1–2 din lagte hain)
+- cashfree.com pe **business account** banao
 - KYC complete karo (PAN + bank account)
-- Dashboard → **Settings → API Keys → Generate Key**
+- Dashboard → **Developers → API Keys**
 - 2 cheezein milengi: **Key ID** aur **Key Secret** — dono safe rakho
 
 ### 2) Google Drive folder
@@ -46,12 +46,13 @@ uniqva-courses/
 - Build settings auto aa jaayenge (netlify.toml se) → **Deploy**
 
 ### 5) Secret keys Netlify me daalo (SABSE IMPORTANT)
-Netlify site → **Site settings → Environment variables → Add** — ye 3 daalo:
+Netlify site → **Site settings → Environment variables → Add** — ye 4 daalo:
 
 | Key | Value |
 |-----|-------|
-| `RAZORPAY_KEY_ID` | tumhari Razorpay Key ID |
-| `RAZORPAY_KEY_SECRET` | tumhari Razorpay Key Secret |
+| `CASHFREE_APP_ID` | tumhara Cashfree App ID (Client ID) |
+| `CASHFREE_SECRET_KEY` | tumhari Cashfree Secret Key |
+| `CASHFREE_ENV` | `production` |
 | `FOLDER_FOOTBALL` | step 2 ka Google Drive folder link |
 
 Phir **Deploys → Trigger deploy → Deploy site** (taaki keys load ho).
@@ -68,7 +69,7 @@ Phir **Deploys → Trigger deploy → Deploy site** (taaki keys load ho).
 ---
 
 ## 🧪 Test karna (paisa kate bina)
-Razorpay **Test Mode** ON karo → Test API keys use karo → test card:
+Cashfree **Test Mode** ON karo → Test API keys use karo → test card:
 `4111 1111 1111 1111`, koi future expiry, koi CVV. Pura flow check karo.
 Sab sahi → **Live Mode** ON, live keys daalo.
 
