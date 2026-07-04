@@ -1,29 +1,37 @@
 /* =========================================================================
-   create-order  (Netlify serverless function)
-   Razorpay order banata hai. Amount SERVER pe decide hota hai, isliye
+   create-order  (Netlify serverless function) — CASHFREE version
+   Cashfree order banata hai. Amount SERVER pe decide hota hai, isliye
    koi client se price change nahi kar sakta.
 
    Required Netlify env vars:
-     RAZORPAY_KEY_ID       (public-ish key)
-     RAZORPAY_KEY_SECRET   (SECRET — kabhi frontend me mat daalo)
+     CASHFREE_APP_ID       (App ID / Client ID)
+     CASHFREE_SECRET_KEY   (SECRET — kabhi frontend me mat daalo)
+     CASHFREE_ENV          ("production" ya "sandbox" — default production)
    ========================================================================= */
 
-// Server-side price map (paise me). Naya course -> yahan amount add karo.
+// Server-side price map (RUPEES me, paise nahi). Naya course -> yahan add karo.
 const COURSE_AMOUNTS = {
-  football: 9900   // ₹99.00
-  // futsal: 9900,
+  football: 99.00   // ₹99.00
+  // futsal: 99.00,
 };
+
+const API_VERSION = "2023-08-01";
 
 exports.handler = async function (event) {
   if (event.httpMethod !== "POST") {
     return json(405, { error: "Method not allowed" });
   }
 
-  const keyId = process.env.RAZORPAY_KEY_ID;
-  const keySecret = process.env.RAZORPAY_KEY_SECRET;
-  if (!keyId || !keySecret) {
-    return json(500, { error: "Server not configured (missing Razorpay keys)" });
+  const appId = process.env.CASHFREE_APP_ID;
+  const secretKey = process.env.CASHFREE_SECRET_KEY;
+  if (!appId || !secretKey) {
+    return json(500, { error: "Server not configured (missing Cashfree keys)" });
   }
+
+  const mode = (process.env.CASHFREE_ENV || "production") === "sandbox" ? "sandbox" : "production";
+  const baseUrl = mode === "sandbox"
+    ? "https://sandbox.cashfree.com/pg"
+    : "https://api.cashfree.com/pg";
 
   let body;
   try { body = JSON.parse(event.body || "{}"); }
@@ -33,34 +41,50 @@ exports.handler = async function (event) {
   const amount = COURSE_AMOUNTS[courseId];
   if (!amount) return json(400, { error: "Unknown course" });
 
-  const auth = Buffer.from(keyId + ":" + keySecret).toString("base64");
+  // Cashfree ko order banate waqt customer details chahiye hoti hain
+  const name  = String(body.name || "").trim().slice(0, 100);
+  const email = String(body.email || "").trim().slice(0, 100);
+  const phone = String(body.phone || "").replace(/\D/g, "").slice(-10);
+  if (!/^\S+@\S+\.\S+$/.test(email) || phone.length < 10) {
+    return json(400, { error: "Missing customer details" });
+  }
+
+  const orderId = "uniqva_" + courseId + "_" + Date.now();
 
   try {
-    const res = await fetch("https://api.razorpay.com/v1/orders", {
+    const res = await fetch(baseUrl + "/orders", {
       method: "POST",
       headers: {
-        "Authorization": "Basic " + auth,
+        "x-client-id": appId,
+        "x-client-secret": secretKey,
+        "x-api-version": API_VERSION,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        amount: amount,
-        currency: "INR",
-        receipt: "rcpt_" + courseId + "_" + Date.now(),
-        notes: { courseId: courseId }
+        order_id: orderId,
+        order_amount: amount,
+        order_currency: "INR",
+        customer_details: {
+          customer_id: "cust_" + phone,
+          customer_name: name,
+          customer_email: email,
+          customer_phone: phone
+        },
+        order_note: courseId,
+        order_tags: { courseId: courseId }
       })
     });
 
     const order = await res.json();
-    if (!res.ok || !order.id) {
-      return json(502, { error: (order.error && order.error.description) || "Order creation failed" });
+    if (!res.ok || !order.payment_session_id) {
+      return json(502, { error: order.message || "Order creation failed" });
     }
 
-    // return only what the browser needs (keyId is public, secret stays here)
+    // return only what the browser needs (secret yahi server pe rehta hai)
     return json(200, {
-      id: order.id,
-      amount: order.amount,
-      currency: order.currency,
-      keyId: keyId
+      orderId: order.order_id,
+      paymentSessionId: order.payment_session_id,
+      mode: mode
     });
   } catch (e) {
     return json(500, { error: "Order request failed" });
