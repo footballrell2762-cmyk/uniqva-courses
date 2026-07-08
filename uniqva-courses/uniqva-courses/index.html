@@ -65,7 +65,7 @@
           <span class="was">&#8377;999</span>
           <span class="save">90% OFF</span>
         </div>
-        <a href="https://payments.cashfree.com/links?code=hallilmsv3c0_AAAAAAAUOUQ" target="_blank" class="btn btn-go btn-lg">Get The Bundle &rarr;</a>
+        <button type="button" class="btn btn-go btn-lg" data-buy data-course="football">Get The Bundle &rarr;</button>
       </div>
 
       <div class="trust-row">
@@ -165,7 +165,7 @@
         <div class="label">One-time price</div>
         <div class="big">&#8377;99</div>
         <div class="small"><s>&#8377;999</s> &nbsp;&bull;&nbsp; 90% OFF today</div>
-        <a href="https://payments.cashfree.com/links?code=hallilmsv3c0_AAAAAAAUOUQ" target="_blank" class="btn btn-go btn-lg pay">Get The Bundle &rarr;</a>
+        <button type="button" class="btn btn-go btn-lg pay" data-buy data-course="football">Get The Bundle &rarr;</button>
         <div class="secure">&#128274; Secured by Cashfree</div>
       </div>
     </div>
@@ -213,7 +213,7 @@
   <div class="wrap">
     <h2 class="display">Stop editing.<br>Start posting.</h2>
     <p>2000+ HD football reels, lifetime access, ek folder. Sirf &#8377;99 &mdash; aaj 90% off.</p>
-    <a href="https://payments.cashfree.com/links?code=hallilmsv3c0_AAAAAAAUOUQ" target="_blank" class="btn btn-go btn-lg">Get The Bundle &rarr;</a>
+    <button type="button" class="btn btn-go btn-lg" data-buy data-course="football">Get The Bundle &rarr;</button>
   </div>
 </section>
 
@@ -235,7 +235,29 @@
 <div class="sticky-cta" id="stickyCta" aria-hidden="true">
   <div class="wrap sticky-inner">
     <div class="sc-price"><b>&#8377;99</b><s>&#8377;999</s><span>2000+ HD reels</span></div>
-    <a href="https://payments.cashfree.com/links?code=hallilmsv3c0_AAAAAAAUOUQ" target="_blank" class="btn btn-go">Get Bundle &rarr;</a>
+    <button type="button" class="btn btn-go" data-buy data-course="football">Get Bundle &rarr;</button>
+  </div>
+</div>
+
+<!-- ===================== CHECKOUT MODAL ===================== -->
+<div class="modal-bg" id="modalBg" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Checkout">
+    <span class="m-close" id="mClose" role="button" aria-label="Close">&times;</span>
+    <h3>Almost there</h3>
+    <p class="m-sub">Details bharo &mdash; payment ke turant baad 2000+ reels ka folder unlock ho jayega.</p>
+
+    <label for="mName">Naam</label>
+    <input id="mName" type="text" placeholder="Aapka naam" autocomplete="name" />
+
+    <label for="mEmail">Email</label>
+    <input id="mEmail" type="email" placeholder="you@email.com" autocomplete="email" />
+
+    <label for="mPhone">Phone (WhatsApp)</label>
+    <input id="mPhone" type="tel" inputmode="numeric" placeholder="10-digit number" autocomplete="tel" />
+
+    <div class="err" id="mErr"></div>
+    <button type="button" class="btn btn-go pay" id="mPay">Pay &#8377;99 &amp; Unlock &rarr;</button>
+    <div class="m-secure">&#128274; Secured by Cashfree</div>
   </div>
 </div>
 
