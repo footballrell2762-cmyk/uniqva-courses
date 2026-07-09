@@ -60,7 +60,11 @@
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
   if (mPay) mPay.addEventListener("click", startPayment);
 
-  function openModal() { if (modalBg) { modalBg.classList.add("show"); if (mName) mName.focus(); setErr(""); } }
+  function openModal() {
+    if (modalBg) { modalBg.classList.add("show"); if (mName) mName.focus(); setErr(""); }
+    // Meta Pixel: buyer ne checkout shuru kiya
+    try { if (window.fbq) fbq("track", "InitiateCheckout"); } catch (e) {}
+  }
   function closeModal() { if (modalBg) modalBg.classList.remove("show"); }
   function setErr(t) { if (mErr) mErr.textContent = t || ""; }
 
