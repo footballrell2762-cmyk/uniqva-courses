@@ -80,9 +80,9 @@
     var email = (mEmail.value || "").trim();
     var phone = (mPhone.value || "").replace(/\D/g, "");
 
-    if (!name)                       { setErr("Naam daalo."); return; }
-    if (!/^\S+@\S+\.\S+$/.test(email)) { setErr("Sahi email daalo."); return; }
-    if (phone.length < 10)           { setErr("10-digit phone number daalo."); return; }
+    if (!name)                                 { setErr("Naam daalo."); return; }
+    if (phone.length < 10)                     { setErr("10-digit phone number daalo."); return; }
+    if (email && !/^\S+@\S+\.\S+$/.test(email)) { setErr("Email sahi daalo ya khaali chhod do."); return; }
 
     setErr("");
     mPay.disabled = true;

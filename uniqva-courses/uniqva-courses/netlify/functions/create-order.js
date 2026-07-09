@@ -41,13 +41,16 @@ exports.handler = async function (event) {
   const amount = COURSE_AMOUNTS[courseId];
   if (!amount) return json(400, { error: "Unknown course" });
 
-  // Cashfree ko order banate waqt customer details chahiye hoti hain
+  // Cashfree ko order banate waqt customer details chahiye hoti hain.
+  // Name + phone zaroori; email OPTIONAL (kam fields = zyada sales).
   const name  = String(body.name || "").trim().slice(0, 100);
-  const email = String(body.email || "").trim().slice(0, 100);
   const phone = String(body.phone || "").replace(/\D/g, "").slice(-10);
-  if (!/^\S+@\S+\.\S+$/.test(email) || phone.length < 10) {
+  if (phone.length < 10) {
     return json(400, { error: "Missing customer details" });
   }
+  // Cashfree ko ek email chahiye, isliye na diya ho to phone se bana lo
+  let email = String(body.email || "").trim().slice(0, 100);
+  if (!/^\S+@\S+\.\S+$/.test(email)) email = phone + "@guest.uniqvareels.app";
 
   const orderId = "uniqva_" + courseId + "_" + Date.now();
 
