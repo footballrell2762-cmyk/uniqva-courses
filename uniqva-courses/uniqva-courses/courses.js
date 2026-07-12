@@ -63,5 +63,25 @@ window.COURSES = [
     ],
     categories: [],
     thumbEmoji: "\ud83d\udc83"
+  },
+  {
+    id: "combo",                    // env var isi se: FOLDER_COMBO
+    live: true,
+    comingSoon: false,
+    badge: "BEST DEAL",
+    title: "All-Access Combo \u2014 Saare Packs",
+    tagline: "Football + AI Influencer \u2014 dono packs ek saath, ek price me.",
+    price: 129,
+    mrp: 168,
+    currency: "INR",
+    heroLine: "Sab Kuch. Ek Price.",
+    promise: "2000+ football reels + 300+ AI influencer reels \u2014 dono Google Drive folders ek saath unlock. Lifetime access.",
+    stats: [
+      { num: "2300+", label: "Total reels" },
+      { num: "2", label: "Packs included" },
+      { num: "Lifetime", label: "One-time access" }
+    ],
+    categories: [],
+    thumbEmoji: "\ud83d\udd25"
   }
 ];

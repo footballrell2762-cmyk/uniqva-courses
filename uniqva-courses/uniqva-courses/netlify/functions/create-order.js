@@ -12,7 +12,8 @@
 // Server-side price map (RUPEES me, paise nahi). Naya course -> yahan add karo.
 const COURSE_AMOUNTS = {
   football: 99.00,  // ₹99.00
-  aigirl:   69.00   // ₹69.00 — 300+ AI influencer reels pack
+  aigirl:   69.00,  // ₹69.00 — 300+ AI influencer reels pack
+  combo:   129.00   // ₹129.00 — all-access combo (saare packs ek saath)
   // futsal: 99.00,
 };
 

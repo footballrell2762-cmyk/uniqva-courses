@@ -135,18 +135,20 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
     // Meta Pixel: Purchase — sirf verified access pe, aur ek order per
     // session sirf ek baar (refresh pe double count na ho)
     try {
+      var prices = { football: 99.00, aigirl: 69.00, combo: 129.00 };
       var pKey = "uniqva_purch_" + (data.paymentId || data.folderLink || "1");
       if (window.fbq && !sessionStorage.getItem(pKey)) {
-        fbq("track", "Purchase", { value: 99.00, currency: "INR" });
+        fbq("track", "Purchase", { value: prices[data.courseId] || 99.00, currency: "INR" });
         sessionStorage.setItem(pKey, "1");
       }
     } catch (e) {}
 
-    // cross-sell: football buyer ko AI pack dikhaओ, AI buyer ko football
+    // cross-sell: football buyer ko AI pack dikhaओ, AI buyer ko football.
+    // Combo buyer ke paas sab hai — usko kuch nahi dikhana.
     try {
       var cs = document.getElementById("crossSell");
       var cst = document.getElementById("crossSellText");
-      if (cs && cst) {
+      if (cs && cst && data.courseId !== "combo") {
         if (data.courseId === "aigirl") {
           cs.href = "/";
           cst.innerHTML = "&#9917; 2000+ Football Reels Bundle &mdash; <b style='color:#ff7cc0'>sirf &#8377;99</b>";
@@ -178,7 +180,7 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (d && d.success && d.folderLink) {
-          var titles = { football: "2000+ Football Reels Bundle", aigirl: "300+ AI Influencer Reels Pack" };
+          var titles = { football: "2000+ Football Reels Bundle", aigirl: "300+ AI Influencer Reels Pack", combo: "All-Access Combo — Saare Packs" };
           var data = { courseId: p.courseId, title: titles[p.courseId] || "Aapka Bundle", folderLink: d.folderLink, paymentId: p.orderId };
           try { sessionStorage.setItem("uniqva_access", JSON.stringify(data)); } catch (e) {}
           try { localStorage.removeItem("uniqva_pending"); } catch (e) {}
