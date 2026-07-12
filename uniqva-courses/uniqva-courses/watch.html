@@ -86,10 +86,12 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
   <div class="emo">&#9888;&#65039;</div>
   <h1 class="display" style="color:var(--ink); margin:14px 0">Access nahi mila</h1>
   <p style="color:var(--ink-dim); max-width:460px; margin:0 auto 24px">
-    Lagta hai aap payment ke baad direct yahan nahi aaye, ya session reset ho gaya.
-    Agar aapne pay kar diya hai, apni payment ID ke saath WhatsApp pe message karo &mdash; hum turant access denge.
+    Agar aapne payment kar di hai to ghabraiye mat &mdash; aapka access safe hai.
+    Neeche WhatsApp button dabaiye, hum <b>turant</b> folder bhej denge.
   </p>
-  <a class="btn btn-go" href="/">&larr; Wapas home</a>
+  <a class="btn btn-go" style="background:#25D366; margin-bottom:14px" href="https://wa.me/917992076544?text=Maine%20payment%20kar%20di%20hai%20par%20folder%20nahi%20mila.%20Please%20turant%20access%20dijiye." target="_blank" rel="noopener">&#128172; WhatsApp pe turant access lo</a>
+  <br>
+  <a class="btn" style="background:transparent; color:var(--ink-dim); border:1px solid var(--line)" href="/">&larr; Wapas home</a>
 </main>
 
 <footer class="foot">
@@ -116,11 +118,7 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
   var raw = null;
   try { raw = sessionStorage.getItem("uniqva_access"); } catch (e) {}
 
-  setTimeout(function () {
-    if (!raw) { show(fail); return; }
-    var data;
-    try { data = JSON.parse(raw); } catch (e) { show(fail); return; }
-    if (!data || !data.folderLink) { show(fail); return; }
+  function unlock(data) {
     var title = document.getElementById("courseTitle");
     var btn   = document.getElementById("folderBtn");
     if (title && data.title) title.textContent = data.title;
@@ -137,6 +135,41 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
     } catch (e) {}
 
     show(success);
+  }
+
+  // session gaya (phone ne tab maar diya / naya browser)? — pending order
+  // se SERVER pe payment verify karke khud unlock karo. Paisa na aaya ho
+  // to kuch nahi milta — link sirf PAID orders pe.
+  function tryRecover() {
+    var praw = null;
+    try { praw = localStorage.getItem("uniqva_pending"); } catch (e) {}
+    if (!praw) { show(fail); return; }
+    var p = null;
+    try { p = JSON.parse(praw); } catch (e) {}
+    if (!p || !p.orderId || (Date.now() - (p.ts || 0)) > 24 * 60 * 60 * 1000) { show(fail); return; }
+    fetch("/.netlify/functions/verify-payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ courseId: p.courseId || "football", order_id: p.orderId })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && d.success && d.folderLink) {
+          var data = { courseId: p.courseId, title: "2000+ Football Reels Bundle", folderLink: d.folderLink, paymentId: p.orderId };
+          try { sessionStorage.setItem("uniqva_access", JSON.stringify(data)); } catch (e) {}
+          try { localStorage.removeItem("uniqva_pending"); } catch (e) {}
+          unlock(data);
+        } else { show(fail); }
+      })
+      .catch(function () { show(fail); });
+  }
+
+  setTimeout(function () {
+    if (!raw) { tryRecover(); return; }
+    var data;
+    try { data = JSON.parse(raw); } catch (e) { tryRecover(); return; }
+    if (!data || !data.folderLink) { tryRecover(); return; }
+    unlock(data);
   }, 600);
 })();
 </script>
