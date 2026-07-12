@@ -43,5 +43,25 @@ window.COURSES = [
       "Trending audio-ready reels"
     ],
     thumbEmoji: "\u26bd"
+  },
+  {
+    id: "aigirl",                   // env var isi se: FOLDER_AIGIRL
+    live: true,
+    comingSoon: false,
+    badge: "NEW",
+    title: "300+ AI Influencer Reels Pack",
+    tagline: "Ready-to-post AI model reels. Theme page ke liye perfect.",
+    price: 69,
+    mrp: 699,
+    currency: "INR",
+    heroLine: "Grow Your AI Influencer Page",
+    promise: "300+ AI-generated model/influencer reels \u2014 glam, fashion aur aesthetic edits. Download karo, apne page pe daalo, grow karo.",
+    stats: [
+      { num: "300+", label: "Ready reels" },
+      { num: "HD",   label: "Best quality" },
+      { num: "Lifetime", label: "One-time access" }
+    ],
+    categories: [],
+    thumbEmoji: "\ud83d\udc83"
   }
 ];
