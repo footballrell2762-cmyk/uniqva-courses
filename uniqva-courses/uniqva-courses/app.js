@@ -13,6 +13,68 @@
   var yr = document.getElementById("yr");
   if (yr) yr.textContent = new Date().getFullYear();
 
+  /* ---- source tracking: customer kahan se aaya (ads / insta / direct) ----
+     UTM mile to wahi jeetega; nahi to referrer se guess. Order ke saath
+     Cashfree me "src:..." note ban ke jayega. */
+  try {
+    var qs = new URLSearchParams(window.location.search);
+    var utmSrc = qs.get("utm_source");
+    if (utmSrc) {
+      var s = utmSrc;
+      if (qs.get("utm_medium"))  s += "/" + qs.get("utm_medium");
+      if (qs.get("utm_content")) s += "/" + qs.get("utm_content");
+      localStorage.setItem("uniqva_src", s.slice(0, 60));
+    } else if (!localStorage.getItem("uniqva_src")) {
+      var ref = document.referrer || "";
+      var guess = "direct";
+      if (/instagram/i.test(ref)) guess = "instagram/organic";
+      else if (/facebook|fb\.me/i.test(ref)) guess = "facebook/organic";
+      else if (ref) {
+        try { guess = "ref/" + new URL(ref).hostname.slice(0, 40); } catch (e) { guess = "ref/other"; }
+      }
+      localStorage.setItem("uniqva_src", guess);
+    }
+  } catch (e) {}
+
+  /* ---- delivery recovery: agar payment ho gaya tha par flow toot gaya
+     (UPI app se wapas aate waqt), to wapas aane pe khud verify karke
+     folder de do. 24h tak ke pending orders hi check hote hain. ---- */
+  function recoverPending() {
+    var raw = null;
+    try { raw = localStorage.getItem("uniqva_pending"); } catch (e) { return; }
+    if (!raw) return;
+    var p = null;
+    try { p = JSON.parse(raw); } catch (e) {}
+    if (!p || !p.orderId || (Date.now() - (p.ts || 0)) > 24 * 60 * 60 * 1000) {
+      try { localStorage.removeItem("uniqva_pending"); } catch (e) {}
+      return;
+    }
+    fetch("/.netlify/functions/verify-payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ courseId: p.courseId, order_id: p.orderId })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data && data.success && data.folderLink) {
+          var c = getCourse(p.courseId);
+          try {
+            sessionStorage.setItem("uniqva_access", JSON.stringify({
+              courseId: p.courseId,
+              title: (c && c.title) || "2000+ Football Reels Bundle",
+              folderLink: data.folderLink,
+              paymentId: p.orderId
+            }));
+          } catch (e) {}
+          try { localStorage.removeItem("uniqva_pending"); } catch (e) {}
+          window.location.href = "watch.html?course=" + encodeURIComponent(p.courseId);
+        }
+        // paid nahi hua -> chup-chaap rehne do; expire hone pe khud saaf ho jayega
+      })
+      .catch(function () {});
+  }
+  recoverPending();
+
   /* ---- render category grid ---- */
   var catGrid = document.getElementById("catGrid");
   if (catGrid && featured && featured.categories) {
@@ -93,16 +155,26 @@
     mPay.textContent = "Please wait…";
 
     // 1) create order on server (Cashfree ko customer details bhi chahiye)
+    var src = "unknown";
+    try { src = localStorage.getItem("uniqva_src") || "unknown"; } catch (e) {}
     fetch("/.netlify/functions/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ courseId: course.id, name: name, email: email, phone: phone })
+      body: JSON.stringify({ courseId: course.id, name: name, email: email, phone: phone, source: src })
     })
       .then(function (r) { return r.json(); })
       .then(function (order) {
         if (!order || !order.paymentSessionId) {
           throw new Error(order && order.error ? order.error : "Order failed");
         }
+
+        // pending order yaad rakho — agar UPI app se wapas aate waqt flow
+        // toota, to agli visit pe recoverPending() isi se delivery karega
+        try {
+          localStorage.setItem("uniqva_pending", JSON.stringify({
+            orderId: order.orderId, courseId: course.id, ts: Date.now()
+          }));
+        } catch (e) {}
 
         // 2) open Cashfree checkout (popup on same page)
         var cashfree = Cashfree({ mode: order.mode || "production" });
@@ -150,6 +222,7 @@
               paymentId: orderId
             }));
           } catch (e) {}
+          try { localStorage.removeItem("uniqva_pending"); } catch (e) {}
           window.location.href = "watch.html?course=" + encodeURIComponent(course.id);
         } else {
           if (wasCancelled) {

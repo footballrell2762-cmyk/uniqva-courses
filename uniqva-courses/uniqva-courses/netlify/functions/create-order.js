@@ -52,6 +52,11 @@ exports.handler = async function (event) {
   let email = String(body.email || "").trim().slice(0, 100);
   if (!/^\S+@\S+\.\S+$/.test(email)) email = phone + "@guest.uniqvareels.app";
 
+  // Source tracking: customer kahan se aaya (ads/insta/direct) —
+  // Cashfree ke order note + tags me dikhega
+  const source = String(body.source || "unknown")
+    .replace(/[^\w\/\-\.]/g, "").slice(0, 40) || "unknown";
+
   const orderId = "uniqva_" + courseId + "_" + Date.now();
 
   try {
@@ -73,8 +78,8 @@ exports.handler = async function (event) {
           customer_email: email,
           customer_phone: phone
         },
-        order_note: courseId,
-        order_tags: { courseId: courseId }
+        order_note: courseId + " | src:" + source,
+        order_tags: { courseId: courseId, source: source }
       })
     });
 
