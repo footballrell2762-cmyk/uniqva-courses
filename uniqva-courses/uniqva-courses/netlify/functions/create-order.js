@@ -13,7 +13,8 @@
 const COURSE_AMOUNTS = {
   football: 99.00,  // ₹99.00
   aigirl:   69.00,  // ₹69.00 — 300+ AI influencer reels pack
-  combo:   129.00   // ₹129.00 — all-access combo (saare packs ek saath)
+  cartoon:  99.00,  // ₹99.00 — 650+ AI cartoon story reels pack
+  combo:   199.00   // ₹199.00 — all-access combo (teeno packs ek saath)
   // futsal: 99.00,
 };
 

@@ -65,20 +65,40 @@ window.COURSES = [
     thumbEmoji: "\ud83d\udc83"
   },
   {
+    id: "cartoon",                  // env var isi se: FOLDER_CARTOON
+    live: true,
+    comingSoon: false,
+    badge: "NEW",
+    title: "650+ AI Cartoon Story Reels Pack",
+    tagline: "AI-generated cartoon story reels. Kids/story pages ke liye perfect.",
+    price: 99,
+    mrp: 999,
+    currency: "INR",
+    heroLine: "Grow Your Cartoon Page",
+    promise: "650+ AI-generated cartoon story videos \u2014 ready-to-post. Download karo, apne page pe daalo, grow karo.",
+    stats: [
+      { num: "650+", label: "Ready videos" },
+      { num: "HD",   label: "Best quality" },
+      { num: "Lifetime", label: "One-time access" }
+    ],
+    categories: [],
+    thumbEmoji: "\ud83c\udfac"
+  },
+  {
     id: "combo",                    // env var isi se: FOLDER_COMBO
     live: true,
     comingSoon: false,
     badge: "BEST DEAL",
-    title: "All-Access Combo \u2014 Saare Packs",
-    tagline: "Football + AI Influencer \u2014 dono packs ek saath, ek price me.",
-    price: 129,
-    mrp: 168,
+    title: "All-Access Combo \u2014 Saare 3 Packs",
+    tagline: "Football + AI Influencer + Cartoon \u2014 teeno packs ek saath.",
+    price: 199,
+    mrp: 267,
     currency: "INR",
     heroLine: "Sab Kuch. Ek Price.",
-    promise: "2000+ football reels + 300+ AI influencer reels \u2014 dono Google Drive folders ek saath unlock. Lifetime access.",
+    promise: "2000+ football + 300+ AI influencer + 650+ cartoon reels \u2014 teeno Google Drive folders ek saath unlock. Lifetime access.",
     stats: [
-      { num: "2300+", label: "Total reels" },
-      { num: "2", label: "Packs included" },
+      { num: "2950+", label: "Total reels" },
+      { num: "3", label: "Packs included" },
       { num: "Lifetime", label: "One-time access" }
     ],
     categories: [],
