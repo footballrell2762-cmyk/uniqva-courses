@@ -58,11 +58,16 @@
       .then(function (data) {
         if (data && data.success && data.folderLink) {
           var c = getCourse(p.courseId);
+          var t = p.courseId === "cart"
+            ? "Aapke Packs"
+            : ((c && c.title) || "Aapka Bundle");
           try {
             sessionStorage.setItem("uniqva_access", JSON.stringify({
               courseId: p.courseId,
-              title: (c && c.title) || "2000+ Football Reels Bundle",
+              title: t,
               folderLink: data.folderLink,
+              folders: data.folders || null,
+              amount: data.amount || null,
               paymentId: p.orderId
             }));
           } catch (e) {}
@@ -111,6 +116,34 @@
   var mPhone  = document.getElementById("mPhone");
   var activeCourseId = null;
 
+  /* ---- CART (shop page ke liye) ----
+     localStorage me sirf course-ids ki list. Checkout par
+     activeCourseId = "__cart__" ho to poora cart ek order me jata hai. */
+  function getCart() {
+    try { return JSON.parse(localStorage.getItem("uniqva_cart") || "[]"); }
+    catch (e) { return []; }
+  }
+  function setCart(ids) {
+    try { localStorage.setItem("uniqva_cart", JSON.stringify(ids)); } catch (e) {}
+    try { document.dispatchEvent(new CustomEvent("uniqva:cart")); } catch (e) {}
+  }
+  window.UNIQVA_CART = { get: getCart, set: setCart };
+
+  // abhi kya kharida ja raha hai — single pack ya poora cart
+  function getSelection() {
+    if (activeCourseId === "__cart__") {
+      var ids = getCart().filter(function (id) { return !!getExactCourse(id); });
+      var total = 0;
+      ids.forEach(function (id) { total += (getExactCourse(id).price || 0); });
+      return ids.length ? { ids: ids, total: total, title: "Aapke " + ids.length + " Packs" } : null;
+    }
+    var c = getCourse(activeCourseId);
+    return c ? { ids: [c.id], total: c.price, title: c.title } : null;
+  }
+  function getExactCourse(id) {
+    return courses.find(function (c) { return c.id === id; }) || null;
+  }
+
   document.querySelectorAll("[data-buy]").forEach(function (btn) {
     btn.addEventListener("click", function () {
       activeCourseId = btn.getAttribute("data-course") || (featured && featured.id);
@@ -123,24 +156,28 @@
   if (mPay) mPay.addEventListener("click", startPayment);
 
   function openModal() {
+    var sel = getSelection();
+    if (!sel) { return; }
     if (modalBg) { modalBg.classList.add("show"); if (mName) mName.focus(); setErr(""); }
+    if (mPay) { mPay.disabled = false; mPay.textContent = "Pay ₹" + sel.total + " & Unlock →"; }
     // Meta Pixel: buyer ne checkout shuru kiya
-    try { if (window.fbq) fbq("track", "InitiateCheckout"); } catch (e) {}
+    try { if (window.fbq) fbq("track", "InitiateCheckout", { value: sel.total, currency: "INR" }); } catch (e) {}
   }
   function closeModal() { if (modalBg) modalBg.classList.remove("show"); }
   function setErr(t) { if (mErr) mErr.textContent = t || ""; }
 
   function getCourse(id) { return courses.find(function (c) { return c.id === id; }) || featured; }
 
-  function resetPayBtn(course) {
+  function resetPayBtn(sel) {
     mPay.disabled = false;
-    mPay.textContent = "Pay ₹" + course.price + " & Unlock →";
+    mPay.textContent = "Pay ₹" + sel.total + " & Unlock →";
   }
 
-  /* ---- the payment flow ---- */
+  /* ---- the payment flow (single pack YA poora cart) ---- */
   function startPayment() {
-    var course = getCourse(activeCourseId);
-    if (!course) { setErr("Course not found. Refresh karke try karo."); return; }
+    var sel = getSelection();
+    if (!sel) { setErr("Kuch select nahi hua. Refresh karke try karo."); return; }
+    var verifyId = sel.ids.length > 1 ? "cart" : sel.ids[0];
 
     var name  = (mName.value || "").trim();
     var email = (mEmail.value || "").trim();
@@ -160,7 +197,7 @@
     fetch("/.netlify/functions/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ courseId: course.id, name: name, email: email, phone: phone, source: src })
+      body: JSON.stringify({ items: sel.ids, name: name, email: email, phone: phone, source: src })
     })
       .then(function (r) { return r.json(); })
       .then(function (order) {
@@ -172,7 +209,7 @@
         // toota, to agli visit pe recoverPending() isi se delivery karega
         try {
           localStorage.setItem("uniqva_pending", JSON.stringify({
-            orderId: order.orderId, courseId: course.id, ts: Date.now()
+            orderId: order.orderId, courseId: verifyId, ts: Date.now()
           }));
         } catch (e) {}
 
@@ -187,55 +224,59 @@
           if (result && result.error && !result.paymentDetails) {
             // user ne popup band kiya ya payment attempt fail hua —
             // phir bhi ek baar status check kar lo (kabhi kabhi paisa kat jaata hai)
-            verifyAndUnlock(order.orderId, course, true);
+            verifyAndUnlock(order.orderId, sel, true);
           } else {
-            verifyAndUnlock(order.orderId, course, false);
+            verifyAndUnlock(order.orderId, sel, false);
           }
         });
       })
       .catch(function (e) {
         setErr(e.message || "Kuch galat hua. Try again.");
-        resetPayBtn(course);
+        resetPayBtn(sel);
       });
   }
 
   /* ---- verify on server, then go to members page ---- */
-  function verifyAndUnlock(orderId, course, wasCancelled) {
+  function verifyAndUnlock(orderId, sel, wasCancelled) {
+    var verifyId = sel.ids.length > 1 ? "cart" : sel.ids[0];
     mPay.textContent = "Verifying payment…";
     fetch("/.netlify/functions/verify-payment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        courseId: course.id,
+        courseId: verifyId,
         order_id: orderId
       })
     })
       .then(function (r) { return r.json(); })
       .then(function (data) {
         if (data && data.success && data.folderLink) {
-          // hand the unlocked link to the watch page for THIS session only
+          // hand the unlocked link(s) to the watch page for THIS session only
           try {
             sessionStorage.setItem("uniqva_access", JSON.stringify({
-              courseId: course.id,
-              title: course.title,
+              courseId: verifyId,
+              title: sel.title,
               folderLink: data.folderLink,
+              folders: data.folders || null,
+              amount: data.amount || sel.total,
               paymentId: orderId
             }));
           } catch (e) {}
           try { localStorage.removeItem("uniqva_pending"); } catch (e) {}
-          window.location.href = "watch.html?course=" + encodeURIComponent(course.id);
+          if (sel.ids.length > 1) setCart([]);   // cart khali karo — kharid liya
+          window.location.href = "watch.html?course=" + encodeURIComponent(verifyId);
         } else {
           if (wasCancelled) {
             setErr("Payment complete nahi hua. Dobara try karo.");
           } else {
             setErr("Payment hua but verify nahi hua. WhatsApp pe order ID bhejo: " + orderId);
           }
-          resetPayBtn(course);
+          resetPayBtn(sel);
         }
       })
       .catch(function (e) {
         setErr("Verify nahi ho paya. Agar paisa kat gaya hai to WhatsApp pe order ID bhejo: " + orderId);
-        resetPayBtn(course);
+        resetPayBtn(sel);
       });
   }
 

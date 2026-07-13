@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon.png" type="image/png" />
+<link rel="apple-touch-icon" href="/favicon.png" />
+
+<title>Shop — All Reels Bundles | Uniqva Reels</title>
+<meta name="description" content="Saare reels bundles ek jagah — football, AI influencer, cartoon aur combo. ₹69 se shuru. Instant Google Drive delivery, lifetime access." />
+<link rel="canonical" href="https://uniqvareels.netlify.app/shop.html" />
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://uniqvareels.netlify.app/shop.html" />
+<meta property="og:title" content="Uniqva Reels Shop — All Bundles" />
+<meta property="og:description" content="Saare reels bundles ek jagah. ₹69 se shuru. Instant delivery, lifetime access." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<!-- Cashfree Checkout -->
+<script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1574504784354009');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+<style>
+  /* ================= SHOP GRID ================= */
+  .shop-head{ text-align:center; padding:46px 0 8px }
+  .shop-head h1{ font-family:"Anton",sans-serif; font-size:clamp(2rem,6vw,3rem); letter-spacing:1px }
+  .shop-head p{ color:var(--ink-dim); margin-top:8px }
+
+  .shop-grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
+    gap:20px; padding:28px 0 60px;
+  }
+  .pcard{
+    background:#fff; border:1px solid var(--line); border-radius:20px;
+    overflow:hidden; display:flex; flex-direction:column;
+    box-shadow:0 10px 30px rgba(10,40,35,.06);
+  }
+  .pcard .thumb{
+    height:150px; display:flex; align-items:center; justify-content:center;
+    font-size:64px; position:relative;
+  }
+  .pcard .badge{
+    position:absolute; top:12px; left:12px; background:#08201d; color:#2BE080;
+    font-size:.68rem; font-weight:800; letter-spacing:1.5px; padding:6px 10px; border-radius:8px;
+  }
+  .pcard .off-badge{
+    position:absolute; top:12px; right:12px; background:#e11d48; color:#fff;
+    font-size:.72rem; font-weight:800; padding:6px 9px; border-radius:8px;
+  }
+  .pcard .body{ padding:16px 16px 18px; display:flex; flex-direction:column; gap:8px; flex:1 }
+  .pcard h3{ font-size:1.02rem; line-height:1.35 }
+  .pcard .tgl{ color:var(--ink-dim); font-size:.85rem; line-height:1.45 }
+  .pcard .prices{ display:flex; align-items:baseline; gap:8px; margin-top:auto; padding-top:6px }
+  .pcard .now{ font-family:"Anton",sans-serif; font-size:1.7rem; color:#0B7A4B }
+  .pcard .was{ color:#98a5a1; text-decoration:line-through; font-size:.95rem }
+  .pcard .btns{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px }
+  .pcard .btns.single{ grid-template-columns:1fr }
+  .pcard .btn{ padding:12px 8px; font-size:.92rem; border-radius:12px }
+  .btn-cart{
+    background:#fff; color:#0B7A4B; border:2px solid #0B7A4B; font-weight:800; cursor:pointer;
+    border-radius:12px; font-family:inherit; font-size:.92rem; padding:12px 8px;
+  }
+  .btn-cart.added{ background:#e7f7ef; }
+
+  /* ================= CART BAR + DRAWER ================= */
+  .cart-bar{
+    position:fixed; left:0; right:0; bottom:0; z-index:250;
+    background:#08201d; color:#fff; padding:12px 0 calc(12px + env(safe-area-inset-bottom));
+    transform:translateY(120%); transition:transform .3s ease; box-shadow:0 -10px 30px rgba(0,0,0,.25);
+  }
+  .cart-bar.show{ transform:translateY(0) }
+  .cart-inner{ display:flex; align-items:center; justify-content:space-between; gap:12px }
+  .cart-info{ cursor:pointer; font-weight:700; display:flex; align-items:center; gap:10px }
+  .cart-info .cnt{ background:#2BE080; color:#08201d; border-radius:999px; padding:3px 10px; font-weight:900 }
+  .cart-bar .btn{ padding:12px 22px; font-size:1rem; white-space:nowrap }
+
+  .cart-drawer{
+    position:fixed; left:0; right:0; bottom:0; z-index:260; background:#fff; color:var(--ink);
+    border-radius:22px 22px 0 0; padding:20px 18px calc(20px + env(safe-area-inset-bottom));
+    transform:translateY(110%); transition:transform .3s ease; box-shadow:0 -18px 50px rgba(0,0,0,.3);
+    max-height:70vh; overflow:auto;
+  }
+  .cart-drawer.show{ transform:translateY(0) }
+  .cart-drawer h3{ margin-bottom:12px }
+  .c-item{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 0; border-bottom:1px solid var(--line) }
+  .c-item .nm{ font-weight:600; font-size:.95rem }
+  .c-item .pr{ font-weight:800; white-space:nowrap }
+  .c-item .rm{ background:none; border:none; color:#e11d48; font-size:1.2rem; cursor:pointer; padding:4px 8px }
+  .c-total{ display:flex; justify-content:space-between; font-weight:800; font-size:1.1rem; padding:14px 0 6px }
+  .cart-drawer .btn{ width:100%; margin-top:10px }
+  .c-close{ float:right; cursor:pointer; color:var(--ink-dim); font-size:1.4rem; line-height:1 }
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="/"><span class="ball">&#128717;&#65039;</span> Uniqva <b>Reels</b></a>
+    <a class="access" href="/">&#9917; Football Pack</a>
+  </div>
+</nav>
+
+<!-- ===================== SHOP ===================== -->
+<header class="shop-head">
+  <div class="wrap">
+    <h1>All Bundles</h1>
+    <p>Jo chahiye cart me daalo &mdash; ek saath payment, saare folders turant. &#9889;</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="shop-grid" id="shopGrid"><!-- courses.js se automatic --></div>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="foot" style="padding-bottom:110px">
+  <div class="wrap foot-inner">
+    <span>&copy; <span id="yr"></span> Uniqva Reels. All rights reserved.</span>
+    <nav class="foot-links" aria-label="Legal">
+      <a href="/terms.html">Terms</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/refund.html">Refund</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+    <span>Need help? <a href="https://wa.me/917992076544" target="_blank" rel="noopener">WhatsApp support</a></span>
+  </div>
+</footer>
+
+<!-- ===================== CART BAR ===================== -->
+<div class="cart-bar" id="cartBar">
+  <div class="wrap cart-inner">
+    <span class="cart-info" id="cartInfo">&#128722; <span class="cnt" id="cartCnt">0</span> <span id="cartTotal">&#8377;0</span> &middot; <u>dekho</u></span>
+    <button type="button" class="btn btn-go" data-buy data-course="__cart__">Buy Now &rarr;</button>
+  </div>
+</div>
+
+<!-- ===================== CART DRAWER ===================== -->
+<div class="cart-drawer" id="cartDrawer">
+  <span class="c-close" id="cartClose">&times;</span>
+  <h3>&#128722; Aapka Cart</h3>
+  <div id="cartItems"></div>
+  <div class="c-total"><span>Total</span><span id="drawerTotal">&#8377;0</span></div>
+  <button type="button" class="btn btn-go btn-lg" data-buy data-course="__cart__">Buy Now &mdash; Ek Saath Payment &rarr;</button>
+</div>
+
+<!-- ===================== CHECKOUT MODAL ===================== -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <span class="m-close" id="mClose">&times;</span>
+    <h3>Almost there</h3>
+    <p class="m-sub">Details bharo &mdash; payment ke turant baad saare folders <b>automatic unlock</b> ho jayenge.</p>
+
+    <label for="mName">Naam</label>
+    <input id="mName" type="text" placeholder="Aapka naam" autocomplete="name" />
+
+    <label for="mPhone">Phone (WhatsApp)</label>
+    <input id="mPhone" type="tel" inputmode="numeric" placeholder="10-digit number" autocomplete="tel" />
+
+    <label for="mEmail">Email <span style="color:#8a8f98;font-weight:400">(optional)</span></label>
+    <input id="mEmail" type="email" placeholder="you@email.com &mdash; optional" autocomplete="email" />
+
+    <div class="err" id="mErr"></div>
+    <button type="button" class="btn btn-go pay" id="mPay">Pay &amp; Unlock &rarr;</button>
+    <div class="m-trust">
+      <span>&#9889; Instant delivery</span>
+      <span>&#128274; Secure Cashfree</span>
+    </div>
+    <div class="m-guarantee">Paisa kata par folder na mila? <b>100% refund.</b></div>
+  </div>
+</div>
+
+<!-- floating WhatsApp button (pinned) -->
+<a class="wa-float" style="bottom:86px" href="https://wa.me/917992076544" target="_blank" rel="noopener" aria-label="WhatsApp par message karo">
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.26.59 4.46 1.71 6.4L3.2 28.8l6.58-1.67a12.74 12.74 0 0 0 6.22 1.6h.01c7.06 0 12.79-5.74 12.79-12.8 0-3.42-1.33-6.63-3.75-9.05a12.72 12.72 0 0 0-9.05-3.68zm0 23.36h-.01a10.6 10.6 0 0 1-5.4-1.48l-.39-.23-4.02 1.02 1.07-3.92-.25-.4a10.55 10.55 0 0 1-1.63-5.65c0-5.86 4.77-10.62 10.64-10.62 2.84 0 5.5 1.11 7.51 3.11a10.56 10.56 0 0 1 3.11 7.52c0 5.86-4.77 10.65-10.63 10.65zm5.83-7.96c-.32-.16-1.89-.93-2.18-1.04-.29-.11-.5-.16-.72.16-.21.32-.82 1.04-1.01 1.25-.18.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.18-.32-.02-.49.14-.65.14-.14.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.72-1.73-.98-2.37-.26-.62-.52-.54-.72-.55h-.61c-.21 0-.56.08-.85.4-.29.32-1.12 1.09-1.12 2.66 0 1.57 1.14 3.08 1.3 3.3.16.21 2.25 3.44 5.45 4.82.76.33 1.36.53 1.82.67.77.24 1.46.21 2.01.13.61-.09 1.89-.77 2.16-1.52.27-.75.27-1.39.19-1.52-.08-.13-.29-.21-.61-.37z"/></svg>
+</a>
+
+<script src="courses.js"></script>
+<script>
+/* ============ SHOP RENDER + CART UI (app.js se pehle chalta hai) ============ */
+(function () {
+  "use strict";
+  var CART_KEY = "uniqva_cart";
+  var thumbs = {
+    football: "linear-gradient(135deg,#0E3B33,#134A40)",
+    aigirl:   "linear-gradient(135deg,#3d1160,#26073f)",
+    cartoon:  "linear-gradient(135deg,#103a75,#0a2450)",
+    combo:    "linear-gradient(135deg,#7a1533,#3d0a1d)"
+  };
+  var fallbackThumb = "linear-gradient(135deg,#123b33,#0a2420)";
+
+  function cGet() {
+    try { return JSON.parse(localStorage.getItem(CART_KEY) || "[]"); } catch (e) { return []; }
+  }
+  function cSet(ids) {
+    try { localStorage.setItem(CART_KEY, JSON.stringify(ids)); } catch (e) {}
+    refresh();
+  }
+  function courseById(id) {
+    return (window.COURSES || []).find(function (c) { return c.id === id; });
+  }
+
+  /* ---- product cards (courses.js me jo bhi live hai — sab) ---- */
+  var grid = document.getElementById("shopGrid");
+  (window.COURSES || []).filter(function (c) { return c.live; }).forEach(function (c) {
+    var off = c.mrp ? Math.round((1 - c.price / c.mrp) * 100) : 0;
+    var card = document.createElement("div");
+    card.className = "pcard";
+    var single = c.id === "combo"; // combo cart me nahi — seedha buy
+    card.innerHTML =
+      '<div class="thumb" style="background:' + (thumbs[c.id] || fallbackThumb) + '">' +
+        (c.badge ? '<span class="badge">' + c.badge + "</span>" : "") +
+        (off ? '<span class="off-badge">-' + off + "%</span>" : "") +
+        "<span>" + (c.thumbEmoji || "🎬") + "</span>" +
+      "</div>" +
+      '<div class="body">' +
+        "<h3>" + c.title + "</h3>" +
+        '<div class="tgl">' + (c.tagline || "") + "</div>" +
+        '<div class="prices"><span class="now">₹' + c.price + '</span>' +
+          (c.mrp ? '<span class="was">₹' + c.mrp + "</span>" : "") + "</div>" +
+        '<div class="btns' + (single ? " single" : "") + '">' +
+          '<button type="button" class="btn btn-go" data-buy data-course="' + c.id + '">Buy Now</button>' +
+          (single ? "" : '<button type="button" class="btn-cart" data-cart="' + c.id + '">+ Cart</button>') +
+        "</div>" +
+      "</div>";
+    grid.appendChild(card);
+  });
+
+  /* ---- add-to-cart buttons ---- */
+  grid.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-cart]");
+    if (!b) return;
+    var id = b.getAttribute("data-cart");
+    var cart = cGet();
+    if (cart.indexOf(id) === -1) { cart.push(id); cSet(cart); }
+    b.textContent = "✓ Added";
+    b.classList.add("added");
+    setTimeout(function () { b.textContent = "+ Cart"; b.classList.remove("added"); }, 1400);
+  });
+
+  /* ---- cart bar + drawer ---- */
+  var bar = document.getElementById("cartBar");
+  var drawer = document.getElementById("cartDrawer");
+  var itemsEl = document.getElementById("cartItems");
+
+  function refresh() {
+    var cart = cGet().filter(courseById);
+    var total = 0;
+    cart.forEach(function (id) { total += courseById(id).price; });
+    document.getElementById("cartCnt").textContent = cart.length;
+    document.getElementById("cartTotal").innerHTML = "₹" + total;
+    document.getElementById("drawerTotal").innerHTML = "₹" + total;
+    bar.classList.toggle("show", cart.length > 0);
+    if (!cart.length) drawer.classList.remove("show");
+
+    itemsEl.innerHTML = "";
+    cart.forEach(function (id) {
+      var c = courseById(id);
+      var row = document.createElement("div");
+      row.className = "c-item";
+      row.innerHTML = '<span class="nm">' + (c.thumbEmoji || "") + " " + c.title + "</span>" +
+        '<span class="pr">₹' + c.price + "</span>" +
+        '<button type="button" class="rm" data-rm="' + id + '">✕</button>';
+      itemsEl.appendChild(row);
+    });
+  }
+
+  itemsEl.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-rm]");
+    if (!b) return;
+    cSet(cGet().filter(function (id) { return id !== b.getAttribute("data-rm"); }));
+  });
+  document.getElementById("cartInfo").addEventListener("click", function () { drawer.classList.add("show"); });
+  document.getElementById("cartClose").addEventListener("click", function () { drawer.classList.remove("show"); });
+  document.addEventListener("uniqva:cart", refresh); // app.js payment ke baad cart khali kare to bar bhi update ho
+
+  refresh();
+})();
+</script>
+<script src="app.js"></script>
+</body>
+</html>

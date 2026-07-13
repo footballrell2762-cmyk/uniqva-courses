@@ -40,9 +40,16 @@ exports.handler = async function (event) {
   try { body = JSON.parse(event.body || "{}"); }
   catch (e) { return json(400, { error: "Bad request" }); }
 
-  const courseId = String(body.courseId || "");
-  const amount = COURSE_AMOUNTS[courseId];
-  if (!amount) return json(400, { error: "Unknown course" });
+  // Single pack (courseId) YA cart (items: ["football","aigirl",...]) —
+  // amount hamesha SERVER pe judta hai, client kuch bhi bheje farak nahi.
+  let items = Array.isArray(body.items)
+    ? body.items.map(function (x) { return String(x); })
+    : (body.courseId ? [String(body.courseId)] : []);
+  items = [...new Set(items)].filter(function (id) { return COURSE_AMOUNTS[id]; });
+  if (!items.length) return json(400, { error: "Unknown course" });
+
+  const amount = items.reduce(function (s, id) { return s + COURSE_AMOUNTS[id]; }, 0);
+  const courseId = items.length === 1 ? items[0] : "cart";
 
   // Cashfree ko order banate waqt customer details chahiye hoti hain.
   // Name + phone zaroori; email OPTIONAL (kam fields = zyada sales).
@@ -81,8 +88,8 @@ exports.handler = async function (event) {
           customer_email: email,
           customer_phone: phone
         },
-        order_note: courseId + " | src:" + source,
-        order_tags: { courseId: courseId, source: source }
+        order_note: items.join("+") + " | src:" + source,
+        order_tags: { courseId: courseId, items: items.join(","), source: source }
       })
     });
 

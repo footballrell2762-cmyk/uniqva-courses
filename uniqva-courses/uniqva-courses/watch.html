@@ -126,11 +126,34 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
   var raw = null;
   try { raw = sessionStorage.getItem("uniqva_access"); } catch (e) {}
 
+  var packNames = {
+    football: "⚽ Football Reels (2000+)",
+    aigirl:   "💃 AI Influencer Pack (300+)",
+    cartoon:  "🎬 Cartoon Story Pack (650+)",
+    combo:    "🔥 All-Access Combo"
+  };
+
   function unlock(data) {
     var title = document.getElementById("courseTitle");
     var btn   = document.getElementById("folderBtn");
     if (title && data.title) title.textContent = data.title;
     if (btn) btn.href = data.folderLink;
+
+    // cart order: har pack ka apna folder button dikhao
+    try {
+      if (btn && data.folders && data.folders.length > 1) {
+        btn.style.display = "none";
+        data.folders.forEach(function (f) {
+          var a = document.createElement("a");
+          a.className = "btn btn-go btn-lg";
+          a.style.cssText = "display:block; margin:10px auto; max-width:440px";
+          a.target = "_blank"; a.rel = "noopener";
+          a.href = f.link;
+          a.textContent = (packNames[f.id] || f.id) + " — Open Folder →";
+          btn.parentNode.insertBefore(a, btn);
+        });
+      }
+    } catch (e) {}
 
     // Meta Pixel: Purchase — sirf verified access pe, aur ek order per
     // session sirf ek baar (refresh pe double count na ho)
@@ -138,17 +161,17 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
       var prices = { football: 99.00, aigirl: 69.00, cartoon: 99.00, combo: 199.00 };
       var pKey = "uniqva_purch_" + (data.paymentId || data.folderLink || "1");
       if (window.fbq && !sessionStorage.getItem(pKey)) {
-        fbq("track", "Purchase", { value: prices[data.courseId] || 99.00, currency: "INR" });
+        fbq("track", "Purchase", { value: Number(data.amount) || prices[data.courseId] || 99.00, currency: "INR" });
         sessionStorage.setItem(pKey, "1");
       }
     } catch (e) {}
 
     // cross-sell: football buyer ko AI pack dikhaओ, AI buyer ko football.
-    // Combo buyer ke paas sab hai — usko kuch nahi dikhana.
+    // Combo/cart buyer ke paas sab hai — usko kuch nahi dikhana.
     try {
       var cs = document.getElementById("crossSell");
       var cst = document.getElementById("crossSellText");
-      if (cs && cst && data.courseId !== "combo") {
+      if (cs && cst && data.courseId !== "combo" && data.courseId !== "cart") {
         if (data.courseId === "aigirl") {
           cs.href = "/";
           cst.innerHTML = "&#9917; 2000+ Football Reels Bundle &mdash; <b style='color:#ff7cc0'>sirf &#8377;99</b>";
@@ -180,8 +203,8 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (d && d.success && d.folderLink) {
-          var titles = { football: "2000+ Football Reels Bundle", aigirl: "300+ AI Influencer Reels Pack", cartoon: "650+ AI Cartoon Story Reels Pack", combo: "All-Access Combo — Saare 3 Packs" };
-          var data = { courseId: p.courseId, title: titles[p.courseId] || "Aapka Bundle", folderLink: d.folderLink, paymentId: p.orderId };
+          var titles = { football: "2000+ Football Reels Bundle", aigirl: "300+ AI Influencer Reels Pack", cartoon: "650+ AI Cartoon Story Reels Pack", combo: "All-Access Combo — Saare 3 Packs", cart: "Aapke Packs" };
+          var data = { courseId: p.courseId, title: titles[p.courseId] || "Aapka Bundle", folderLink: d.folderLink, folders: d.folders || null, amount: d.amount || null, paymentId: p.orderId };
           try { sessionStorage.setItem("uniqva_access", JSON.stringify(data)); } catch (e) {}
           try { localStorage.removeItem("uniqva_pending"); } catch (e) {}
           unlock(data);

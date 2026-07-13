@@ -59,19 +59,31 @@ exports.handler = async function (event) {
       return json(400, { success: false, error: "Payment not completed (status: " + order.order_status + ")" });
     }
 
-    // 2) order isi course ke liye bana hona chahiye (order swap na ho sake)
-    const paidCourseId = (order.order_tags && order.order_tags.courseId) || order.order_note || "";
+    // 2) order isi course/cart ke liye bana hona chahiye (order swap na ho sake)
+    const tags = order.order_tags || {};
+    const paidCourseId = tags.courseId || String(order.order_note || "").split(" |")[0] || "";
     if (paidCourseId !== courseId) {
       return json(400, { success: false, error: "Order/course mismatch" });
     }
 
-    // status PAID -> hand over the secret folder link for this course
-    const folderLink = process.env["FOLDER_" + courseId.toUpperCase()];
-    if (!folderLink) {
-      return json(500, { success: false, error: "Course link not configured" });
+    // status PAID -> is order ke SAARE packs ke secret folder links do.
+    // (purane single orders me items tag nahi hota — tab sirf courseId)
+    const ids = tags.items ? String(tags.items).split(",") : [courseId];
+    const folders = [];
+    for (const id of ids) {
+      const link = process.env["FOLDER_" + id.toUpperCase()];
+      if (!link) {
+        return json(500, { success: false, error: "Link not configured for: " + id });
+      }
+      folders.push({ id: id, link: link });
     }
 
-    return json(200, { success: true, folderLink: folderLink });
+    return json(200, {
+      success: true,
+      folderLink: folders[0].link,           // purane clients ke liye
+      folders: folders,                      // cart: har pack ka folder
+      amount: order.order_amount || null     // pixel ke liye asli amount
+    });
   } catch (e) {
     return json(500, { success: false, error: "Verification request failed" });
   }
