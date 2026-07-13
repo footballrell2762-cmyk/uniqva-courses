@@ -228,14 +228,19 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
     var card = document.createElement("div");
     card.className = "pcard";
     var single = c.id === "combo"; // combo cart me nahi — seedha buy
+    // photo + title pe click => product page (customer pehle visit karega)
+    var openTag  = c.url ? '<a href="' + c.url + '" style="text-decoration:none; color:inherit">' : "<div>";
+    var closeTag = c.url ? "</a>" : "</div>";
     card.innerHTML =
-      '<div class="thumb" style="background:' + (thumbs[c.id] || fallbackThumb) + '">' +
+      openTag +
+      '<div class="thumb" style="background:' + (thumbs[c.id] || fallbackThumb) + '; cursor:' + (c.url ? "pointer" : "default") + '">' +
         (c.badge ? '<span class="badge">' + c.badge + "</span>" : "") +
         (off ? '<span class="off-badge">-' + off + "%</span>" : "") +
         "<span>" + (c.thumbEmoji || "🎬") + "</span>" +
       "</div>" +
+      closeTag +
       '<div class="body">' +
-        "<h3>" + c.title + "</h3>" +
+        openTag + "<h3>" + c.title + (c.url ? ' <span style="color:#0B7A4B; font-size:.85rem; font-weight:700">Dekho →</span>' : "") + "</h3>" + closeTag +
         '<div class="tgl">' + (c.tagline || "") + "</div>" +
         '<div class="prices"><span class="now">₹' + c.price + '</span>' +
           (c.mrp ? '<span class="was">₹' + c.mrp + "</span>" : "") + "</div>" +

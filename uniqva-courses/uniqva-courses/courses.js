@@ -13,6 +13,7 @@
 window.COURSES = [
   {
     id: "football",                 // env var isi se: FOLDER_FOOTBALL
+    url: "/",
     live: true,
     comingSoon: false,
     badge: "BESTSELLER",
@@ -46,6 +47,7 @@ window.COURSES = [
   },
   {
     id: "aigirl",                   // env var isi se: FOLDER_AIGIRL
+    url: "/ai-pack.html",
     live: true,
     comingSoon: false,
     badge: "NEW",
@@ -66,6 +68,7 @@ window.COURSES = [
   },
   {
     id: "cartoon",                  // env var isi se: FOLDER_CARTOON
+    url: "/cartoon-pack.html",
     live: true,
     comingSoon: false,
     badge: "NEW",

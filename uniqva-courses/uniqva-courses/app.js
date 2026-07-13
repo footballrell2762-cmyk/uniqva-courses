@@ -150,6 +150,20 @@
       openModal();
     });
   });
+
+  // product pages ke "Add to Cart" buttons — click pe cart me daalo,
+  // button ke agle element (note/link) ko dikha do
+  document.querySelectorAll("[data-addcart]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var id = btn.getAttribute("data-addcart");
+      if (!getExactCourse(id)) return;
+      var cart = getCart();
+      if (cart.indexOf(id) === -1) { cart.push(id); setCart(cart); }
+      btn.textContent = "✓ Cart me add ho gaya";
+      var note = btn.nextElementSibling;
+      if (note && note.classList.contains("addcart-note")) note.style.display = "block";
+    });
+  });
   if (mClose) mClose.addEventListener("click", closeModal);
   if (modalBg) modalBg.addEventListener("click", function (e) { if (e.target === modalBg) closeModal(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
