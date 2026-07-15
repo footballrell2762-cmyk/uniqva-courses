@@ -161,7 +161,10 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
       var prices = { football: 99.00, aigirl: 69.00, cartoon: 99.00, combo: 199.00 };
       var pKey = "uniqva_purch_" + (data.paymentId || data.folderLink || "1");
       if (window.fbq && !sessionStorage.getItem(pKey)) {
-        fbq("track", "Purchase", { value: Number(data.amount) || prices[data.courseId] || 99.00, currency: "INR" });
+        // eventID = orderId -> server CAPI ke saath dedup (Meta ek hi ginega)
+        fbq("track", "Purchase",
+          { value: Number(data.amount) || prices[data.courseId] || 99.00, currency: "INR" },
+          { eventID: data.paymentId || undefined });
         sessionStorage.setItem(pKey, "1");
       }
     } catch (e) {}

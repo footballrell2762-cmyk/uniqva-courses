@@ -10,9 +10,57 @@
      CASHFREE_ENV            ("production" ya "sandbox")
      FOLDER_FOOTBALL         (us course ka asli Drive folder link)
      FOLDER_<COURSEID>       (har naye course ke liye)
+   Optional (Conversions API — 100% pakka Purchase tracking):
+     META_CAPI_TOKEN         (Events Manager > dataset > Settings >
+                              Conversions API > Generate access token)
+     META_PIXEL_ID           (default: 1574504784354009)
    ========================================================================= */
 
+const crypto = require("crypto");
+
 const API_VERSION = "2023-08-01";
+const PIXEL_ID = process.env.META_PIXEL_ID || "1574504784354009";
+const SITE_URL = "https://uniqvareels.netlify.app/";
+
+// SHA-256 hash (Meta CAPI ke liye email/phone hash hote hain, plaintext nahi)
+function sha256(v) {
+  return crypto.createHash("sha256").update(String(v).trim().toLowerCase()).digest("hex");
+}
+
+// Server-to-server Purchase event Meta ko bhejo. event_id = orderId, taaki
+// browser pixel + ye dono ek hi sale bhejein to Meta ek hi gine (dedup).
+async function sendCapiPurchase(order) {
+  const token = process.env.META_CAPI_TOKEN;
+  if (!token) return; // token nahi diya to chup-chaap skip (delivery pe koi asar nahi)
+
+  const cust  = order.customer_details || {};
+  const email = String(cust.customer_email || "").trim().toLowerCase();
+  const phone = String(cust.customer_phone || "").replace(/\D/g, "").slice(-10);
+
+  const user_data = {};
+  if (email && /@/.test(email)) user_data.em = [sha256(email)];
+  if (phone.length === 10)      user_data.ph = [sha256("91" + phone)];
+
+  const payload = {
+    data: [{
+      event_name: "Purchase",
+      event_time: Math.floor(Date.now() / 1000),
+      event_id: order.order_id,        // browser pixel ke saath dedup
+      action_source: "website",
+      event_source_url: SITE_URL,
+      user_data: user_data,
+      custom_data: { currency: "INR", value: Number(order.order_amount) || 0 }
+    }]
+  };
+
+  const url = "https://graph.facebook.com/v19.0/" + PIXEL_ID +
+              "/events?access_token=" + encodeURIComponent(token);
+  await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+}
 
 exports.handler = async function (event) {
   if (event.httpMethod !== "POST") {
@@ -77,6 +125,11 @@ exports.handler = async function (event) {
       }
       folders.push({ id: id, link: link });
     }
+
+    // Conversions API: server se seedha Meta ko Purchase bhejo (100% pakka,
+    // browser/ad-blocker/session pe depend nahi). Fail ho to bhi delivery
+    // rukni nahi chahiye — isliye try/catch me.
+    try { await sendCapiPurchase(order); } catch (e) {}
 
     return json(200, {
       success: true,
