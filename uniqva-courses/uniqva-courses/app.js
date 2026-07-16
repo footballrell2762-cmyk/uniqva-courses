@@ -294,6 +294,45 @@
       });
   }
 
+  /* ---- nav cart badge: har page ke upar cart count ---- */
+  function updateNavCart() {
+    var el = document.getElementById("navCartCount");
+    if (!el) return;
+    var n = getCart().filter(function (id) { return !!getExactCourse(id); }).length;
+    el.textContent = n;
+    el.classList.toggle("show", n > 0);
+  }
+  document.addEventListener("uniqva:cart", updateNavCart);
+  updateNavCart();
+
+  /* ---- FOMO timer: aaj raat 12 baje tak ka countdown (roz reset) ---- */
+  (function () {
+    var els = document.querySelectorAll("[data-timer]");
+    if (!els.length) return;
+    function pad(n) { return (n < 10 ? "0" : "") + n; }
+    function tick() {
+      var now = new Date();
+      var end = new Date(now); end.setHours(23, 59, 59, 999);
+      var s = Math.max(0, Math.floor((end - now) / 1000));
+      var t = pad(Math.floor(s / 3600)) + ":" + pad(Math.floor((s % 3600) / 60)) + ":" + pad(s % 60);
+      els.forEach(function (e) { e.textContent = t; });
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+
+  /* ---- scroll animations: .anim wale elements fade-up hote hain ---- */
+  try {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("anim-in"); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll(".anim").forEach(function (el) { io.observe(el); });
+  } catch (e) {
+    document.querySelectorAll(".anim").forEach(function (el) { el.classList.add("anim-in"); });
+  }
+
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, function (m) {
       return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m];

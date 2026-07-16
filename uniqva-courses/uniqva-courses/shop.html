@@ -117,8 +117,11 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
 <!-- ===================== NAV ===================== -->
 <nav class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="/"><span class="ball">&#128717;&#65039;</span> Uniqva <b>Reels</b></a>
-    <a class="access" href="/">&#9917; Football Pack</a>
+    <a class="brand brand-uv" href="/"><span class="uv-play">&#9654;</span><span class="uv-name"><span class="n1">UNIQVA</span> <span class="n2">REELS</span></span></a>
+    <span style="display:flex; gap:18px; align-items:center">
+      <a class="access" href="/">&#9917; Football Pack</a>
+      <a class="access nav-cart" href="#" onclick="document.getElementById('cartDrawer').classList.add('show'); return false" aria-label="Cart">&#128722;<span class="nav-cart-n" id="navCartCount">0</span></a>
+    </span>
   </div>
 </nav>
 
@@ -209,7 +212,11 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
     combo:    "linear-gradient(135deg,#7a1533,#3d0a1d)"
   };
   // jis pack ki asli product image hai — wo card pe dikhegi (emoji ki jagah)
-  var thumbImgs = { football: "/img/football-box.jpg" };
+  var thumbImgs = {
+    football: "/img/football-box.jpg",
+    aigirl:   "/img/aigirl-box.jpg",
+    cartoon:  "/img/cartoon-box.jpg"
+  };
   var fallbackThumb = "linear-gradient(135deg,#123b33,#0a2420)";
 
   function cGet() {

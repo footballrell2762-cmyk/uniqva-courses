@@ -88,10 +88,10 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
 <!-- ===================== NAV ===================== -->
 <nav class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="/"><span class="ball">&#127775;</span> Uniqva <b>Reels</b></a>
-    <span style="display:flex; gap:16px; align-items:center">
+    <a class="brand brand-uv" href="/"><span class="uv-play">&#9654;</span><span class="uv-name"><span class="n1">UNIQVA</span> <span class="n2">REELS</span></span></a>
+    <span style="display:flex; gap:18px; align-items:center">
       <a class="access" href="/shop.html">&#128717;&#65039; All Packs</a>
-      <a class="access" href="#buy">Get Pack</a>
+      <a class="access nav-cart" href="/shop.html" aria-label="Cart">&#128722;<span class="nav-cart-n" id="navCartCount">0</span></a>
     </span>
   </div>
 </nav>
@@ -101,11 +101,9 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
   <div class="wrap">
     <div class="ph-grid">
 
-      <div class="ph-img" style="aspect-ratio:1/1; background:radial-gradient(ellipse at 50% 20%, #3d1160 0%, #26073f 60%, #140222 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px" id="productImg">
+      <div class="ph-img">
         <span class="ph-off">-90%</span>
-        <span style="font-size:88px">&#128131;</span>
-        <div style="color:#fff; font-family:'Anton',sans-serif; font-size:1.8rem; letter-spacing:1px; text-align:center; line-height:1.3">300+ AI INFLUENCER<br><span style="color:#ff4fa3">REELS PACK</span></div>
-        <div style="color:#cdb6e6; font-size:.85rem">HD &middot; READY TO POST</div>
+        <img src="/img/aigirl-box.jpg" alt="300+ AI Influencer Girls Reels — Premium Reels Bundle" />
       </div>
 
       <div>
@@ -121,14 +119,15 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
         <ul class="ph-points">
           <li><span class="tk" style="color:#ff2d8a">&#10003;</span> 300+ AI-generated model &amp; influencer reels</li>
           <li><span class="tk" style="color:#ff2d8a">&#10003;</span> Glam, fashion &amp; aesthetic edits &mdash; ready-to-post</li>
+          <li><span class="tk" style="color:#ff2d8a">&#10003;</span> <b>100% copyright free videos</b> &mdash; bina tension post karo</li>
           <li><span class="tk" style="color:#ff2d8a">&#10003;</span> Easy download &mdash; Google Drive link, one click</li>
           <li><span class="tk" style="color:#ff2d8a">&#10003;</span> Lifetime access &middot; one-time &#8377;69</li>
         </ul>
 
-        <div class="ph-cta">
-          <button type="button" class="btn btn-go btn-lg btn-glam" data-buy data-course="aigirl">Buy Now &mdash; &#8377;69 &rarr;</button>
-          <button type="button" data-addcart="aigirl" style="width:100%; background:#fff; border:2px solid #ff2d8a; color:#ff2d8a; font-weight:800; padding:14px; border-radius:14px; cursor:pointer; font-family:inherit; font-size:1rem">&#128722; Add To Cart</button>
-          <a class="addcart-note" href="/shop.html" style="display:none; color:#ff2d8a; font-weight:700; text-decoration:none">&#128722; Cart dekho &amp; ek saath payment karo &rarr;</a>
+        <div class="offer-timer">&#9889; Limited Time Offer &mdash; deal khatam hone me <b data-timer>--:--:--</b></div>
+
+        <div class="ph-cta" style="margin-top:16px">
+          <button type="button" class="btn btn-go btn-lg btn-glam btn-pulse" data-buy data-course="aigirl">Buy Now &mdash; &#8377;69 &rarr;</button>
         </div>
 
         <div class="ph-trust">
@@ -141,13 +140,76 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
     </div>
 
     <div class="previews">
-      <h3>&#127916; Sample Reels</h3>
-      <div class="pv-sub">Previews jald aa rahe hain &mdash; tab tak categories neeche dekho.</div>
+      <h3>&#127916; Sample Reels &mdash; quality khud dekh lo</h3>
+      <div class="pv-sub">Tap karke play karo. Aisi hi 300+ reels folder me milengi.</div>
       <div class="pv-row" id="pvRow">
-        <div class="pv-ph" style="background:linear-gradient(160deg,#3d1160,#26073f)"><span style="font-size:40px">&#128131;</span> Preview<br>jald aayega</div>
-        <div class="pv-ph" style="background:linear-gradient(160deg,#47125f,#2a0a45)"><span style="font-size:40px">&#10024;</span> Preview<br>jald aayega</div>
-        <div class="pv-ph" style="background:linear-gradient(160deg,#26073f,#140222)"><span style="font-size:40px">&#128248;</span> Preview<br>jald aayega</div>
+        <video src="/previews/ai-1.mp4" controls preload="metadata" playsinline></video>
+        <video src="/previews/ai-2.mp4" controls preload="metadata" playsinline></video>
+        <video src="/previews/ai-3.mp4" controls preload="metadata" playsinline></video>
+        <video src="/previews/ai-4.mp4" controls preload="metadata" playsinline></video>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== REVIEWS ===================== -->
+<section class="section anim" id="reviews">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow" style="color:#ff2d8a">Reviews</div>
+      <h2>&#11088; Buyers kya kehte hain</h2>
+      <p>Asli buyers ke reviews &mdash; jaise aate hain, yahan lagte hain.</p>
+    </div>
+    <div class="rev-grid">
+      <div class="rev-cta" style="grid-column:1/-1; border-color:#ff2d8a">
+        <div style="font-size:2rem; margin-bottom:8px">&#127942;</div>
+        <b>Aapne ye pack kharida hai?</b><br>
+        Apna review WhatsApp karo &mdash; yahan feature hoga! &#127881;<br><br>
+        <a href="https://wa.me/917992076544?text=Maine%20AI%20Influencer%20Pack%20kharida%20hai.%20Mera%20review%3A%20" target="_blank" rel="noopener" style="color:#ff2d8a">&#128172; Apna review bhejo &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHAT YOU GET ===================== -->
+<section class="section alt anim" id="whatyouget">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow" style="color:#ff2d8a">Package details</div>
+      <h2>Is pack me kya-kya milega</h2>
+    </div>
+    <div class="wyg-grid">
+      <div class="wyg-box">
+        <h3>&#128230; What You Get</h3>
+        <ul>
+          <li><span class="tk" style="color:#ff2d8a">&#10003;</span> 300+ High-Quality AI Influencer Girls Reels</li>
+          <li><span class="tk" style="color:#ff2d8a">&#10003;</span> Aesthetic &amp; Trending AI Girl Content</li>
+          <li><span class="tk" style="color:#ff2d8a">&#10003;</span> Ready-to-Upload Viral Videos</li>
+          <li><span class="tk" style="color:#ff2d8a">&#10003;</span> Perfect for Instagram, Reels &amp; Shorts</li>
+          <li><span class="tk" style="color:#ff2d8a">&#10003;</span> No Editing Required</li>
+          <li><span class="tk" style="color:#ff2d8a">&#10003;</span> 100% Copyright Free</li>
+          <li><span class="tk" style="color:#ff2d8a">&#10003;</span> Lifetime Access</li>
+        </ul>
+      </div>
+      <div class="wyg-box">
+        <h3>&#127919; Perfect For</h3>
+        <ul>
+          <li><span class="tk" style="color:#ff2d8a">&#10003;</span> Instagram Reel Creators</li>
+          <li><span class="tk" style="color:#ff2d8a">&#10003;</span> YouTube Shorts Channels</li>
+          <li><span class="tk" style="color:#ff2d8a">&#10003;</span> AI Theme Pages</li>
+          <li><span class="tk" style="color:#ff2d8a">&#10003;</span> Faceless Content Creators</li>
+          <li><span class="tk" style="color:#ff2d8a">&#10003;</span> Beginners &amp; Experts &mdash; dono ke liye</li>
+        </ul>
+      </div>
+    </div>
+    <div class="benefit-row">
+      <div class="ben">&#128197; <b>Months of ready content</b><br>roz post karne ka stock</div>
+      <div class="ben">&#9200; <b>Save time &amp; effort</b><br>editing ka jhanjhat khatam</div>
+      <div class="ben">&#128640; <b>Boost engagement instantly</b><br>viral-ready content</div>
+    </div>
+    <div class="red-offer">
+      &#9889; Limited Time Offer &mdash; Don't Miss Out!
+      <span class="ro-sub">Start posting viral AI influencer content TODAY. Deal khatam hone me <b data-timer>--:--:--</b></span>
     </div>
   </div>
 </section>
@@ -201,9 +263,7 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
         <li><span class="tk">&#10003;</span> Google Drive folder &mdash; instant access</li>
         <li><span class="tk">&#10003;</span> Lifetime access, one-time payment</li>
       </ul>
-      <button type="button" class="btn btn-go btn-lg btn-glam" data-buy data-course="aigirl">Get The Pack &rarr;</button>
-      <button type="button" data-addcart="aigirl" style="width:100%; margin-top:10px; background:transparent; border:2px solid #ff4fa3; color:#ff7cc0; font-weight:800; padding:14px; border-radius:14px; cursor:pointer; font-family:inherit; font-size:1rem">&#128722; Add To Cart</button>
-      <a class="addcart-note" href="/shop.html" style="display:none; margin-top:10px; color:#ff7cc0; font-weight:700; text-decoration:none">&#128722; Cart dekho &amp; ek saath payment karo &rarr;</a>
+      <button type="button" class="btn btn-go btn-lg btn-glam btn-pulse" data-buy data-course="aigirl">Get The Pack &rarr;</button>
       <div class="g-trust">
         <span>&#9889; Payment ke turant baad <b>automatic</b> folder</span>
         <span>&#128179; Paisa kata par na mila to <b>100% refund</b></span>
@@ -218,8 +278,14 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
 
     <div style="max-width:520px; margin:28px auto 0">
       <div style="font-weight:800; letter-spacing:1.5px; color:var(--ink-dim); font-size:.78rem; margin-bottom:12px; text-align:center">AUR BUNDLES</div>
-      <a href="/" style="display:flex; justify-content:space-between; gap:10px; padding:14px 16px; border:1px solid var(--line); border-radius:14px; margin-bottom:10px; text-decoration:none; color:var(--ink); font-weight:600; background:#fff">&#9917; 2000+ Football Reels Bundle <b>&#8377;99 &rarr;</b></a>
-      <a href="/cartoon-pack.html" style="display:flex; justify-content:space-between; gap:10px; padding:14px 16px; border:1px solid var(--line); border-radius:14px; margin-bottom:10px; text-decoration:none; color:var(--ink); font-weight:600; background:#fff">&#127916; 650+ Cartoon Story Reels <b>&#8377;99 &rarr;</b></a>
+      <div style="display:flex; align-items:center; gap:10px; padding:12px 14px; border:1px solid var(--line); border-radius:14px; margin-bottom:10px; background:#fff">
+        <a href="/" style="flex:1; text-decoration:none; color:var(--ink); font-weight:600">&#9917; 2000+ Football Reels Bundle <b style="color:#0B7A4B">&#8377;99</b></a>
+        <button type="button" class="mini-cart" data-addcart="football" style="border-color:#0B7A4B; color:#0B7A4B">&#128722; + Cart</button>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; padding:12px 14px; border:1px solid var(--line); border-radius:14px; margin-bottom:10px; background:#fff">
+        <a href="/cartoon-pack.html" style="flex:1; text-decoration:none; color:var(--ink); font-weight:600">&#127916; 650+ USA Cartoon Videos <b style="color:#0B7A4B">&#8377;99</b></a>
+        <button type="button" class="mini-cart" data-addcart="cartoon" style="border-color:#0B7A4B; color:#0B7A4B">&#128722; + Cart</button>
+      </div>
       <a href="/shop.html" style="display:block; text-align:center; padding:13px; text-decoration:none; color:#ff2d8a; font-weight:800">&#128717;&#65039; Saare bundles dekho &rarr;</a>
     </div>
   </div>

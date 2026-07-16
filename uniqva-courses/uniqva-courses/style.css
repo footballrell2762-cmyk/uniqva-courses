@@ -415,6 +415,94 @@ html.js-reveal .reveal.in{ opacity:1; transform:none }
 @media (min-width:861px){ .sticky-cta{ display:none } }
 @media (max-width:400px){ .sc-price span{ display:none } }
 
+/* ====================== UNIQVA WORDMARK LOGO ====================== */
+.brand-uv{ display:flex; align-items:center; gap:9px; text-decoration:none }
+.uv-play{
+  width:30px; height:30px; border-radius:9px; flex:0 0 auto;
+  background:linear-gradient(135deg,#8b3dff,#ffb020);
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:.7rem;
+}
+.uv-name{ font-family:"Anton",sans-serif; font-size:1.25rem; letter-spacing:1.5px; line-height:1 }
+.uv-name .n1{ color:#b06bff }
+.uv-name .n2{ color:#ffb020 }
+
+/* ====================== NAV CART ICON ====================== */
+.nav-cart{ position:relative; font-size:1.15rem; text-decoration:none }
+.nav-cart-n{
+  position:absolute; top:-8px; right:-12px; background:#e11d48; color:#fff;
+  font-size:.62rem; font-weight:800; border-radius:999px; padding:2px 6px; display:none;
+}
+.nav-cart-n.show{ display:inline-block }
+
+/* ====================== LIGHT PROOF STRIP ====================== */
+.proof-lite{ background:#f4faf7; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:16px 0 }
+.pl-inner{ display:flex; flex-wrap:wrap; gap:10px 28px; justify-content:center; color:var(--ink); font-size:.95rem; font-weight:500 }
+.pl-inner b{ color:#0B7A4B }
+
+/* ====================== OFFER TIMER (FOMO) ====================== */
+.offer-timer{
+  display:inline-flex; align-items:center; gap:8px; margin-top:12px;
+  background:#fff1f2; border:1.5px solid #fda4af; color:#be123c;
+  font-weight:700; font-size:.92rem; padding:10px 16px; border-radius:12px;
+}
+.offer-timer b{ font-family:"Anton",sans-serif; letter-spacing:1px; font-size:1.05rem }
+
+/* ====================== WHAT YOU GET / PERFECT FOR ====================== */
+.wyg-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px }
+@media (max-width:760px){ .wyg-grid{ grid-template-columns:1fr } }
+.wyg-box{ background:#fff; border:1px solid var(--line); border-radius:20px; padding:24px 22px; box-shadow:0 10px 30px rgba(10,40,35,.05) }
+.wyg-box h3{ margin-bottom:14px; font-size:1.1rem }
+.wyg-box ul{ list-style:none; display:grid; gap:10px; padding:0 }
+.wyg-box li{ display:flex; gap:9px; color:var(--ink); font-weight:500 }
+.wyg-box li .tk{ color:#0B7A4B; font-weight:900; flex:0 0 auto }
+.benefit-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:20px }
+@media (max-width:760px){ .benefit-row{ grid-template-columns:1fr } }
+.ben{ background:#e7f7ef; border-radius:16px; padding:18px 16px; text-align:center; color:var(--ink); font-size:.95rem }
+.red-offer{
+  margin-top:22px; background:linear-gradient(120deg,#dc2626,#b91c1c); color:#fff;
+  border-radius:18px; padding:22px 20px; text-align:center; font-size:1.05rem; font-weight:700;
+  box-shadow:0 14px 36px rgba(220,38,38,.3);
+}
+.red-offer .ro-sub{ display:block; margin-top:6px; font-size:.92rem; font-weight:500; opacity:.95 }
+.red-offer b[data-timer]{ font-family:"Anton",sans-serif; letter-spacing:1.5px }
+
+/* ====================== REVIEWS ====================== */
+.rev-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px }
+.rev-card{ background:#fff; border:1px solid var(--line); border-radius:18px; padding:20px 18px; box-shadow:0 10px 26px rgba(10,40,35,.05) }
+.rev-stars{ color:#f59e0b; letter-spacing:2px; margin-bottom:8px }
+.rev-text{ color:var(--ink); line-height:1.55; font-size:.95rem }
+.rev-name{ margin-top:12px; color:var(--ink-dim); font-weight:700; font-size:.85rem }
+.rev-cta{
+  background:#fff; border:2px dashed #0B7A4B; border-radius:18px; padding:24px 20px; text-align:center; color:var(--ink);
+}
+.rev-cta a{ color:#0B7A4B; font-weight:800; text-decoration:none }
+
+/* ====================== ANIMATIONS ====================== */
+.anim{ opacity:0; transform:translateY(26px); transition:opacity .65s ease, transform .65s ease }
+.anim-in{ opacity:1; transform:none }
+@media (prefers-reduced-motion: reduce){ .anim{ opacity:1; transform:none; transition:none } }
+.pcard, .mb-card{ transition:transform .25s ease, box-shadow .25s ease }
+.pcard:hover, .mb-card:hover{ transform:translateY(-6px); box-shadow:0 20px 46px rgba(10,40,35,.14) }
+@keyframes ctapulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(43,224,128,.45) } 50%{ box-shadow:0 0 0 14px rgba(43,224,128,0) } }
+.btn-pulse{ animation:ctapulse 2.4s infinite }
+
+/* ====================== MORE-BUNDLES PHOTO CARDS ====================== */
+.mb-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:22px }
+@media (max-width:760px){ .mb-grid{ grid-template-columns:1fr } }
+.mb-card{ background:#0d2b26; border-radius:20px; overflow:hidden; border:1px solid #1d4a42 }
+.mb-card img{ width:100%; display:block }
+.mb-body{ padding:16px 16px 18px; color:#fff }
+.mb-title{ color:#fff; text-decoration:none; font-weight:800; font-size:1.02rem; display:block; margin-bottom:6px }
+.mb-price{ color:#2BE080; font-weight:800; margin-bottom:12px }
+.mb-price s{ color:#7fa39a; margin-left:8px; font-weight:500 }
+.mb-actions{ display:flex; gap:10px }
+.mb-actions .btn{ flex:1; padding:12px 8px; font-size:.92rem }
+.mini-cart{
+  background:transparent; border:2px solid #2BE080; color:#2BE080; border-radius:12px;
+  padding:10px 14px; font-weight:800; cursor:pointer; font-family:inherit; font-size:.9rem; white-space:nowrap;
+}
+
 /* ====================== REDUCED MOTION SAFETY ====================== */
 @media (prefers-reduced-motion:reduce){
   html.js-reveal .reveal,
