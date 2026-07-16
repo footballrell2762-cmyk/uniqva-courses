@@ -208,6 +208,8 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
     cartoon:  "linear-gradient(135deg,#103a75,#0a2450)",
     combo:    "linear-gradient(135deg,#7a1533,#3d0a1d)"
   };
+  // jis pack ki asli product image hai — wo card pe dikhegi (emoji ki jagah)
+  var thumbImgs = { football: "/img/football-box.jpg" };
   var fallbackThumb = "linear-gradient(135deg,#123b33,#0a2420)";
 
   function cGet() {
@@ -234,9 +236,11 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
     card.innerHTML =
       openTag +
       '<div class="thumb" style="background:' + (thumbs[c.id] || fallbackThumb) + '; cursor:' + (c.url ? "pointer" : "default") + '">' +
+        (thumbImgs[c.id]
+          ? '<img src="' + thumbImgs[c.id] + '" alt="' + c.title + '" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover">'
+          : "<span>" + (c.thumbEmoji || "🎬") + "</span>") +
         (c.badge ? '<span class="badge">' + c.badge + "</span>" : "") +
         (off ? '<span class="off-badge">-' + off + "%</span>" : "") +
-        "<span>" + (c.thumbEmoji || "🎬") + "</span>" +
       "</div>" +
       closeTag +
       '<div class="body">' +
