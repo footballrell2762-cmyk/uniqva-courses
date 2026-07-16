@@ -301,6 +301,11 @@
     var n = getCart().filter(function (id) { return !!getExactCourse(id); }).length;
     el.textContent = n;
     el.classList.toggle("show", n > 0);
+    // product pages: cart icon tabhi dikhe jab cart khaali na ho
+    var wrap = el.parentElement;
+    if (wrap && wrap.classList.contains("nav-cart-auto")) {
+      wrap.classList.toggle("has-items", n > 0);
+    }
   }
   document.addEventListener("uniqva:cart", updateNavCart);
   updateNavCart();
