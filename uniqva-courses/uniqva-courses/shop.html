@@ -311,6 +311,20 @@ src="https://www.facebook.com/tr?id=1574504784354009&ev=PageView&noscript=1"
   });
   document.getElementById("cartInfo").addEventListener("click", function () { drawer.classList.add("show"); });
   document.getElementById("cartClose").addEventListener("click", function () { drawer.classList.remove("show"); });
+
+  // Buy Now dabate hi cart-drawer neeche chala jaye — checkout modal
+  // saaf-suthra upar aaye (dono ek saath khule na rahen)
+  document.addEventListener("click", function (e) {
+    if (e.target.closest("[data-buy]")) {
+      drawer.classList.remove("show");
+      bar.classList.remove("show");
+      setTimeout(refresh, 400); // modal band karke wapas aaye to bar phir dikhe
+    }
+  });
+  document.getElementById("modalBg").addEventListener("click", function (e) {
+    if (e.target === this) refresh();
+  });
+  document.getElementById("mClose").addEventListener("click", refresh);
   document.addEventListener("uniqva:cart", refresh); // app.js payment ke baad cart khali kare to bar bhi update ho
 
   refresh();

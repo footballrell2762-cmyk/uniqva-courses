@@ -507,6 +507,15 @@ html.js-reveal .reveal.in{ opacity:1; transform:none }
   padding:10px 14px; font-weight:800; cursor:pointer; font-family:inherit; font-size:.9rem; white-space:nowrap;
 }
 
+/* ====================== CHECKOUT MODAL POLISH ====================== */
+/* modal hamesha cart-drawer/bar ke UPAR + neeche-se-upar smooth entry */
+.modal-bg{ z-index:500 !important }
+@keyframes modalUp{
+  from{ transform:translateY(80px); opacity:0 }
+  to{ transform:none; opacity:1 }
+}
+.modal-bg.show .modal{ animation:modalUp .38s cubic-bezier(.22,.61,.36,1) }
+
 /* ====================== REDUCED MOTION SAFETY ====================== */
 @media (prefers-reduced-motion:reduce){
   html.js-reveal .reveal,
