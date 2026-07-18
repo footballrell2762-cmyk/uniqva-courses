@@ -11,3 +11,19 @@
   from = "/watch"
   to = "/watch.html"
   status = 200
+
+# ---- speed: images/videos ko browser + CDN me lambe time cache karo ----
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/previews/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/favicon*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
